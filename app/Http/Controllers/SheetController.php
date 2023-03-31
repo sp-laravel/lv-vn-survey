@@ -8,13 +8,13 @@ use SheetDB\SheetDB;
 
 class SheetController extends Controller {
   public function index() {
-    $sheetdb = new SheetDB('3qepkvcneqzo8');
+    $sheetdb = new SheetDB(config('services.sheetdb.key'));
     $sheets = $sheetdb->get();
     $rows = count($sheets);
     // return $sheets;
 
     if ($rows >= 1) {
-      $table = "horaries";
+      $table = "horario_docentes";
       $index = 0;
       DB::table($table)->delete();
 
