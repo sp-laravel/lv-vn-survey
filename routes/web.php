@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Encuesta_docenteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SheetController;
 use App\Http\Controllers\WelcomeController;
@@ -17,9 +18,11 @@ Route::get('/', [WelcomeController::class, 'index'])->middleware(['auth', 'verif
 
 Route::get('/sheet', [SheetController::class, 'index'])->name('sheet');
 
-Route::get('/dashboard', function () {
-  return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//   return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::post('encuesta_docente', [Encuesta_docenteController::class, 'store'])->name('encuesta_docente.store');
 
 Route::middleware('auth')->group(function () {
   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

@@ -62,10 +62,13 @@ Route::middleware('auth')->group(function () {
 
 //Alumno panel routes
 Route::prefix('/alumno')->name('alumno.')->group(function () {
-  Route::get('/login', [AlumnoAuth::class, 'create'])->name('login');
-  Route::post('/login', [AlumnoAuth::class, 'store']);
+  Route::get('/login', [AlumnoAuth::class, 'create'])->middleware('guest:alumno')->name('login');
+  Route::post('/login', [AlumnoAuth::class, 'store'])->middleware('guest:alumno');
   Route::get('/logout', [AlumnoAuth::class, 'destroy'])->name('logout');
   Route::get('/dashboard', function () {
-    return 'Alumno';
-  });
+    return view('alumno.dashboard');
+  })->middleware('alumno');
+  Route::get('/simple', function () {
+    return 'Alumno Simple';
+  })->middleware('alumno');
 });

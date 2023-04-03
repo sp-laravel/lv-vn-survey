@@ -54,53 +54,144 @@
   </header>
 
 
-  <div class="container">
-    @auth
-      <div class="mt-3 text-success fw-bold">{{ Auth::user()->email }}</div>
-    @endauth
-
-    <div class="">
-      {{-- {{ $newDate = date('l') }} --}}
-    </div>
-
-    <div class="mt-3">
-      <table class="table table-striped table-hover">
-        <tr class="bg-success">
-          <th class="text-white">INICIO</th>
-          <th class="text-white">FIN</th>
-          <th class="text-white">DOCENTE</th>
-          <th class="text-white">CURSO</th>
-          <th class="text-white">AULA</th>
-          <th class="text-white">ESTADO</th>
-          <th class="text-white text-center">ACTIVAR</th>
-        </tr>
-
-        @foreach ($horaries as $horary)
-          <tr>
-            <td class="text-secondary">{{ $horary->h_fin }}</td>
-            <td class="text-secondary">{{ $horary->h_inicio }}</td>
-            <td class="text-secondary">{{ $horary->docente }}</td>
-            <td class="text-secondary">{{ $horary->asignatura }}</td>
-            <td class="text-secondary">{{ $horary->aula }}</td>
-            <td style="width: 110px;"
-              @if ($horary->status == 'Por tomar') class="text-danger"
-              @elseif ($horary->status == 'Encuestando')
-                class="text-warning"
-              @else
-                class="text-success" @endif>
-              <span>
-                {{ $horary->status }}
-              </span>
-            </td>
-            <td>
-              <div class="form-check form-switch d-flex justify-content-center">
-                <input class="form-check-input" type="radio" name="flexRadioDefault"
-                  value="{{ $horary->aula . '","' . $horary->id }}">
+  <div class="container mt-3">
+    @if ($role == 'tutor')
+      <x-tutor></x-tutor>
+    @else
+      @if (count($cycleActive) >= 1)
+        <form action=" {{ route('encuesta_docente.store') }}" method="POST">
+          @csrf
+          <div class="questions text-secondary">
+            <div class="question mb-4">
+              <div class="mb-2">
+                <b>1.¿El docente inició su clase puntualmente?</b>
               </div>
-            </td>
-          </tr>
-        @endforeach
-    </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n1" id="q120" value="20">
+                <label class="form-check-label" for="q120">
+                  Siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n1" id="q115" value="15">
+                <label class="form-check-label" for="q115">
+                  Casi siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n1" id="q110" value="10">
+                <label class="form-check-label" for="q110">
+                  Pocas veces
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n1" id="q105" value="5">
+                <label class="form-check-label" for="q105">
+                  Nunca
+                </label>
+              </div>
+            </div>
+
+            <div class="question mb-4">
+              <div class="mb-2">
+                <b>2.¿Entendiste la clase?</b>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n2" id="q220" value="20">
+                <label class="form-check-label" for="q220">
+                  Toda la clase
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n2" id="q215" value="15">
+                <label class="form-check-label" for="q215">
+                  Casi todo
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n2" id="q210" value="10">
+                <label class="form-check-label" for="q210">
+                  No mucho
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n2" id="q205" value="5">
+                <label class="form-check-label" for="q205">
+                  No entendí nada
+                </label>
+              </div>
+            </div>
+
+            <div class="question mb-4">
+              <div class="mb-2">
+                <b>3.¿El docente desarrolló toda la teoría de la clase y/o cómo mínimo el 70% de
+                  las preguntas?</b>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n3" id="q320" value="20">
+                <label class="form-check-label" for="q320">
+                  Siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n3" id="q315" value="15">
+                <label class="form-check-label" for="q315">
+                  Casi siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n3" id="q310" value="10">
+                <label class="form-check-label" for="q310">
+                  Pocas veces
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n3" id="q305" value="5">
+                <label class="form-check-label" for="q305">
+                  Nunca
+                </label>
+              </div>
+            </div>
+
+            <div class="question mb-4">
+              <div class="mb-2">
+                <b>4.¿El docente es exigente en clase y se preocupa para que todos aprendan?</b>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n4" id="q420" value="20">
+                <label class="form-check-label" for="q420">
+                  Siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n4" id="q415" value="15">
+                <label class="form-check-label" for="q415">
+                  Casi siempre
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n4" id="q410" value="10">
+                <label class="form-check-label" for="q410">
+                  Pocas veces
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="n4" id="q405" value="5">
+                <label class="form-check-label" for="q405">
+                  Nunca
+                </label>
+              </div>
+            </div>
+          </div>
+          <input type="hidden" name="id" value="{{ $cycleActive[0] }}">
+          <button type="submit" class="btn btn-primary btn-md" style="width: 150px;">Enviar</button>
+        </form>
+      @else
+        <div class="flex justify-content-center align-items-center">
+          <h4 class="text-center text-secondary mt-5">NO HAY ENCUESTAS</h4>
+        </div>
+      @endif
+    @endif
   </div>
   </div>
 

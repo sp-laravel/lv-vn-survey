@@ -10,18 +10,20 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Alumno extends Authenticatable {
   use HasApiTokens, HasFactory, Notifiable;
+  protected $table = 'user_alumnos';
 
   protected $fillable = [
-    // 'name',
-    // 'email',
-    // 'password',
+    'name',
+    'email',
+    'password',
   ];
 
   protected $hidden = [
-    // 'password',
-    // 'remember_token',
+    'password',
+    'remember_token',
   ];
   protected $casts = [
-    // 'email_verified_at' => 'datetime',
+    'email_verified_at' => 'datetime',
   ];
+  protected $guarded = ['id', '_token'];
 }
