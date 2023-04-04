@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Encuesta_docente;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -12,20 +13,25 @@ class WelcomeController extends Controller {
   public function index() {
 
     // Data
-    $name = Auth::user()->name;
-    $dni = Auth::user()->persona_dni;
-    $todayHour = date('H:i:s');
-    $surveyMinutes = 80;
-    $surveyTime = $surveyMinutes * 60;
-    $horariesStatus = [];
-    $cyclesMerge = [];
-
+    $datetimeNow = Carbon::now();
+    $dateNow = $datetimeNow->toDateString();
     $todayDayFormat = Carbon::today()->format('l');
     $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
     // $todayDay = "Lunes";
+    $name = Auth::user()->name;
+    $dni = Auth::user()->persona_dni;
+    $todayHour = date('H:i:s');
+    $surveyMinutes = 30;
+    $surveyTime = $surveyMinutes * 60;
+    $horariesStatus = [];
+    $cyclesMerge = [];
+    $horaryTimes = [];
+
 
     if (is_numeric($name)) {
       $role = "alumn";
+      $cycleActive = [];
+
       $cycles = DB::select("SELECT DISTINCT
           palu.dni AS dni_alumno,
           al.email AS email_alumno,
@@ -67,8 +73,6 @@ class WelcomeController extends Controller {
           AND dia = '" . $todayDay . "'
       ");
 
-      $cycleActive = [];
-
       foreach ($horaries as $horary) {
         $horaryEndAdd = strtotime($horary->h_fin) + $surveyTime;
         $horaryEnd = date('H:i', $horaryEndAdd);
@@ -82,7 +86,25 @@ class WelcomeController extends Controller {
       }
       // return dd($horaries);
       // return count($cycleActive);
-      return view('welcome', compact('role', 'dni', 'cycleActive'));
+      // return $cycleActive[2];
+
+      $courseSurveySent = 0;
+      if (count($cycleActive) >= 1) {
+
+        $surveySent = DB::connection('pgsql2')->select("SELECT 
+            /* id, docente, curso, aula, fecha, hora, n1, n2, n3, n4, dni_alumno */
+            id
+          FROM 
+            encuesta_docentes
+          WHERE 
+            dni_alumno = '" . Auth::user()->name . "'
+            AND fecha = '" . $dateNow . "'
+            AND docente = '" . $cycleActive[2] . "'
+        ");
+        $courseSurveySent =  count($surveySent);
+      }
+
+      return view('welcome', compact('role', 'dni', 'cycleActive', 'courseSurveySent'));
     } else {
       $role = "tutor";
       $cycles = DB::select("SELECT DISTINCT
@@ -102,8 +124,6 @@ class WelcomeController extends Controller {
           AND au.codigo_aula IS NOT NULL
           AND dus1.dni = '" . $dni . "'  
       ");
-
-      // $cycleFirst = $cycles[0]->codigo_final;
 
       foreach ($cycles as $cycle) {
         array_push($cyclesMerge, $cycle->codigo_final);
@@ -133,9 +153,11 @@ class WelcomeController extends Controller {
 
         $horaryStart = date('H:i', strtotime($horary->h_fin));
         $horary->h_fin = $horaryStart;
+
+        array_push($horaryTimes, $horary->h_fin, $horary->h_inicio);
       }
 
-      return view('welcome', compact('role', 'dni', 'horaries'));
+      return view('welcome', compact('role', 'dni', 'horaries', 'horaryTimes'));
     }
   }
 }

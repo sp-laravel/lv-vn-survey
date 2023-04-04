@@ -7,5 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Encuesta_docente extends Model {
   use HasFactory;
+  public $timestamps = false;
   protected $connection = 'pgsql2';
 }
