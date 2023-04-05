@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Encuesta_docenteController;
+use App\Http\Controllers\Horario_docenteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\SheetController;
 use App\Http\Controllers\WelcomeController;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', [WelcomeController::class, 'index'])->middleware(['auth', 'verified'])->name('welcome');
 
 Route::get('/sheet', [SheetController::class, 'index'])->name('sheet');
+Route::post('/horary', [Horario_docenteController::class, 'update'])->name('horary');
 
 // Route::get('/dashboard', function () {
 //   return view('dashboard');

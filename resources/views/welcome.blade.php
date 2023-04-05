@@ -9,6 +9,10 @@
   <meta http-equiv='expires' content='-1'>
   <meta http-equiv='pragma' content='no-cache'>
 
+  @if ($role == 'tutor')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+  @endif
+
   <title>Encuestas</title>
 
   <!-- Fonts -->
@@ -18,8 +22,28 @@
     integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
 
   <script src="https://kit.fontawesome.com/4a8a06bcc2.js" crossorigin="anonymous"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.4/font/bootstrap-icons.css">
+
+  <style>
+    .radio__loading {
+      display: none;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      width: 100%;
+      height: 25px;
+    }
+
+    .radio__loading--active {
+      display: flex;
+    }
+
+    .horaryActive {
+      cursor: pointer !important;
+    }
+  </style>
 </head>
 
 <body>
@@ -63,10 +87,34 @@
   </header>
 
   @if ($role == 'tutor')
-    <x-tutor :horaries="$horaries" :horarytimes="$horaryTimes"></x-tutor>
+    <x-tutor :horaries="$horaries" :horarytimes="$horaryTimes" :horaryids="$horaryIds"></x-tutor>
+  @elseif ($role == 'coordinador')
+    <x-coordinator :cycles="$cycles"></x-coordinator>
   @else
-    <x-alumn :cycleactive="$cycleActive" :coursesurveysent="$courseSurveySent"></x-alumn>
+    <x-alumn :cycleactive="$cycleActive" :coursesurveysent="$courseSurveySent" :horarytimes="$horaryTimes"></x-alumn>
   @endif
+
+  <script>
+    let url = @json(url()->current());
+    let btnUpddate = document.querySelector("#btnUpddate");
+    btnUpddate.addEventListener("click", function() {
+      handleHardReload(url)
+    });
+
+    // Force Clean Cache
+    async function handleHardReload(url) {
+      await fetch(url, {
+        headers: {
+          Pragma: 'no-cache',
+          Expires: '-1',
+          'Cache-Control': 'no-cache',
+        },
+      });
+      window.location.href = url;
+      window.location.reload();
+    }
+  </script>
+
 </body>
 
 </html>

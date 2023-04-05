@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Horario_docente extends Model {
+  protected $fillable = [
+    'estado',
+    'id'
+  ];
   use HasFactory;
   protected $connection = 'pgsql2';
-  // protected $table = 'agencies';
+  protected $table = 'horario_docentes';
 }

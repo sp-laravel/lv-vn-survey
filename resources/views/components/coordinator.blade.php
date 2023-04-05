@@ -14,38 +14,21 @@
   <div class="mt-3">
     <table class="table table-striped table-hover">
       <tr class="bg-primary">
-        <th class="text-white">INICIO</th>
-        <th class="text-white">FIN</th>
-        <th class="text-white">DOCENTE</th>
-        <th class="text-white">CURSO</th>
         <th class="text-white">AULA</th>
-        <th class="text-white">ESTADO</th>
+        <th class="text-white">TUTOR</th>
         <th class="text-center text-white">ACTIVAR</th>
       </tr>
 
-      @foreach ($horaries as $horary)
+      @foreach ($cycles as $cycle)
         <tr>
-          <td class="text-secondary">{{ $horary->h_fin }}</td>
-          <td class="text-secondary">{{ $horary->h_inicio }}</td>
-          <td class="text-secondary">{{ $horary->docente }}</td>
-          <td class="text-secondary">{{ $horary->asignatura }}</td>
-          <td class="text-secondary">{{ $horary->aula }}</td>
-          <td style="width: 110px;"
-            @if ($horary->proceso == 'Por tomar') class="text-danger"
-              @elseif ($horary->proceso == 'Encuestando')
-                class="text-warning"
-              @else
-                class="text-success" @endif>
-            <span>
-              {{ $horary->proceso }}
-            </span>
-          </td>
+          <td class="text-secondary">{{ $cycle->codigo_final }}</td>
+          <td class="text-secondary">{{ $cycle->apellido_tutor }} {{ $cycle->apellido_tutor }}</td>
           <td>
             <div class="form-check form-switch d-flex justify-content-center position-relative">
               <div class="radio__loading position-absolute"></div>
-              <input class="form-check-input horaryActive @if ($horary->estado == 1) theone @endif"
-                type="checkbox" name="horaryActive" onclick="activeStatus(this,{{ $horary->id }})"
-                value="{{ $horary->id }}" @if ($horary->estado == 1) checked @endif>
+              <input class="form-check-input horaryActive 
+                type="checkbox" name="horaryActive"
+                onclick="activeStatus(this)">
             </div>
           </td>
         </tr>
@@ -54,9 +37,6 @@
 </div>
 
 <div class="token">
-  <form action="{{ route('horary') }}">
-    {{-- <input type="button" class="button" onclick="updateHoraryStatus()" value="Send"> --}}
-  </form>
   <input type="hidden" name="_token" id="token" value="{{ csrf_token() }}" />
 </div>
 
@@ -67,11 +47,6 @@
   crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
   // Data
-  // let url = @json(url()->current());
-  let horaryTimes = @json($horaryTimes);
-  let horaryIds = @json($horaryIds);
-  let timeRunning = new Date();
-  // console.log(horaryTimes);
 
   // Field
   // let _token = document.querySelector("#token");
@@ -93,49 +68,6 @@
     // This is to ensure reload with url's having '#'
     window.location.reload();
   }
-
-  // Refresh Web by horary
-  function refreshWeb() {
-    let x = new Date()
-    let ampm = x.getHours() >= 12 ? '' : '';
-    hours = x.getHours();
-    hours = hours.toString().length == 1 ? 0 + hours.toString() : hours;
-
-    let minutes = x.getMinutes().toString()
-    minutes = minutes.length == 1 ? 0 + minutes : minutes;
-    let seconds = x.getSeconds().toString()
-    seconds = seconds.length == 1 ? 0 + seconds : seconds;
-    let month = (x.getMonth() + 1).toString();
-    month = month.length == 1 ? 0 + month : month;
-
-    let dt = x.getDate().toString();
-    dt = dt.length == 1 ? 0 + dt : dt;
-
-    // console.log(`${hours}:${minutes}:${seconds}`);
-
-    let hoursTemp = x.getHours();
-    let minutesTemp = x.getMinutes();
-    let secondsTemp = x.getSeconds();
-    timeRunning.setHours(hoursTemp, minutesTemp, secondsTemp);
-    let timeRunningNow = timeRunning.toLocaleTimeString();
-
-    horaryTimes.forEach(time => {
-      let timeHorary = new Date();
-      let timeTemp = time.split(':');
-      let extractHour = timeTemp[0];
-      let extractMinute = timeTemp[1];
-
-      timeHorary.setHours(extractHour, extractMinute, 00);
-      let timeHoraryActive = timeHorary.toLocaleTimeString();
-
-      if (timeRunningNow == timeHoraryActive) {
-        console.log("reload");
-        handleHardReload(url);
-      }
-    });
-  }
-
-  setInterval(refreshWeb, 1000);
 
   // Radiobutton On/Off
   $("input:radio").on("click", function(e) {
@@ -161,8 +93,6 @@
       url: '/horary',
       data: {
         id: idHorary,
-        status: status,
-        ids: horaryIds
       },
       success: function(data) {
         // $("#data").html(data.msg);

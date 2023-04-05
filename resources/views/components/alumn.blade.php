@@ -143,6 +143,11 @@
     </div>
 
     <script>
+      //Data 
+      let horaryTimes = @json($horaryTimes);
+      let timeRunning = new Date();
+      // console.log(horaryTimes);
+
       //Fields
       let n1 = document.survey.n1;
       let n2 = document.survey.n2;
@@ -187,14 +192,76 @@
           })
         }
       });
+
+      // Refresh Web by horary
+      function refreshWeb() {
+        let x = new Date()
+        let ampm = x.getHours() >= 12 ? '' : '';
+        hours = x.getHours();
+        hours = hours.toString().length == 1 ? 0 + hours.toString() : hours;
+
+        let minutes = x.getMinutes().toString()
+        minutes = minutes.length == 1 ? 0 + minutes : minutes;
+        let seconds = x.getSeconds().toString()
+        seconds = seconds.length == 1 ? 0 + seconds : seconds;
+        let month = (x.getMonth() + 1).toString();
+        month = month.length == 1 ? 0 + month : month;
+
+        let dt = x.getDate().toString();
+        dt = dt.length == 1 ? 0 + dt : dt;
+
+        // console.log(`${hours}:${minutes}:${seconds}`);
+
+        let hoursTemp = x.getHours();
+        let minutesTemp = x.getMinutes();
+        let secondsTemp = x.getSeconds();
+        timeRunning.setHours(hoursTemp, minutesTemp, secondsTemp);
+        let timeRunningNow = timeRunning.toLocaleTimeString();
+
+        horaryTimes.forEach(time => {
+          let timeHorary = new Date();
+          let timeTemp = time.split(':');
+          let extractHour = timeTemp[0];
+          let extractMinute = timeTemp[1];
+
+          timeHorary.setHours(extractHour, extractMinute, 00);
+          let timeHoraryActive = timeHorary.toLocaleTimeString();
+
+          if (timeRunningNow == timeHoraryActive) {
+            console.log("reload");
+            handleHardReload(url);
+          }
+        });
+      }
+
+      setInterval(refreshWeb, 1000);
     </script>
+  @elseif (count($cycleActive) > 6)
+    <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
+      <div>
+        <button class="btn btn-primary d-block m-auto" id="btnUpddate">
+          <i class="fa-solid fa-arrow-rotate-right text-white"></i>
+        </button>
+        <h4 class="mt-2 text-center text-secondary">HAY MAS DE UNA ENCUESTA ACTIVA</h4>
+      </div>
+    </div>
   @else
     <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
-      <h4 class="mt-5 text-center text-secondary">NO HAY ENCUESTAS</h4>
+      <div>
+        <button class="btn btn-primary d-block m-auto" id="btnUpddate">
+          <i class="fa-solid fa-arrow-rotate-right text-white"></i>
+        </button>
+        <h4 class="mt-2 text-center text-secondary">NO HAY ENCUESTAS</h4>
+      </div>
     </div>
   @endif
 @else
   <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
-    <h4 class="mt-5 text-center text-secondary">YA SE REALIZO LA ENCUESTA</h4>
+    <div>
+      <button class="btn btn-primary d-block m-auto" id="btnUpddate">
+        <i class="fa-solid fa-arrow-rotate-right text-white"></i>
+      </button>
+      <h4 class="mt-2 text-center text-secondary">YA SE REALIZO LA ENCUESTA</h4>
+    </div>
   </div>
 @endif
