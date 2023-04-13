@@ -1,3 +1,4 @@
+{{-- Message Success Survey --}}
 @if (session('success'))
   <script>
     let msgBack = @json(session('success'));
@@ -9,133 +10,65 @@
     })
   </script>
 @endif
+{{-- Message Error Survey --}}
+@if (session('error'))
+  <script>
+    let msgBack = @json(session('error'));
+    Swal.fire({
+      icon: 'error',
+      title: `${msgBack}`,
+      showConfirmButton: false,
+      timer: 3000
+    })
+  </script>
+@endif
+
+{{-- Validate Survey Sent --}}
 @if ($courseSurveySent == 0)
-  @if (count($cycleActive) == 6)
-    <div class="container mt-4">
+  {{-- Validate Survey Teacher --}}
+  @if (count($cycleActive) == 6 && $type == 'docente')
+    <div class="container px-4 mt-4 pb-4">
+      <h2 class="mb-4 text-center text-primary fw-bold" style="font-size: 2rem;">ENCUESTA AL DOCENTE</h2>
       <form action=" {{ route('encuesta_docente.store') }}" method="POST" name="survey" id="survey"
         class=""survey>
         @csrf
         <div class="questions text-secondary">
-          <div class="mb-4 question">
-            <div class="mb-2">
-              <b class="tagN1">1.¿El docente inició su clase puntualmente?</b>
+          @foreach ($questions as $question)
+            <div class="mb-4 question">
+              <div class="mb-2 d-flex">
+                <span class="index-list">{{ $question->numero_pregunta }}. </span>
+                <b class="tagN{{ $question->numero_pregunta }}">{{ $question->pregunta }}</b>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}20" value="20">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}20">
+                  Siempre
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}15" value="15">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}15">
+                  Casi siempre
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}10" value="10">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}10">
+                  Pocas veces
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}05" value="5">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}05">
+                  Nunca
+                </label>
+              </div>
             </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n1" id="q120" value="20">
-              <label class="form-check-label" for="q120">
-                Siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n1" id="q115" value="15">
-              <label class="form-check-label" for="q115">
-                Casi siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n1" id="q110" value="10">
-              <label class="form-check-label" for="q110">
-                Pocas veces
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n1" id="q105" value="5">
-              <label class="form-check-label" for="q105">
-                Nunca
-              </label>
-            </div>
-          </div>
-
-          <div class="mb-4 question">
-            <div class="mb-2">
-              <b class="tagN2">2.¿Entendiste la clase?</b>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n2" id="q220" value="20">
-              <label class="form-check-label" for="q220">
-                Toda la clase
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n2" id="q215" value="15">
-              <label class="form-check-label" for="q215">
-                Casi todo
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n2" id="q210" value="10">
-              <label class="form-check-label" for="q210">
-                No mucho
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n2" id="q205" value="5">
-              <label class="form-check-label" for="q205">
-                No entendí nada
-              </label>
-            </div>
-          </div>
-
-          <div class="mb-4 question">
-            <div class="mb-2">
-              <b class="tagN3">3.¿El docente desarrolló toda la teoría de la clase y/o cómo mínimo el 70% de
-                las preguntas?</b>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n3" id="q320" value="20">
-              <label class="form-check-label" for="q320">
-                Siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n3" id="q315" value="15">
-              <label class="form-check-label" for="q315">
-                Casi siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n3" id="q310" value="10">
-              <label class="form-check-label" for="q310">
-                Pocas veces
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n3" id="q305" value="5">
-              <label class="form-check-label" for="q305">
-                Nunca
-              </label>
-            </div>
-          </div>
-
-          <div class="mb-4 question">
-            <div class="mb-2">
-              <b class="tagN4">4.¿El docente es exigente en clase y se preocupa para que todos aprendan?</b>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n4" id="q420" value="20">
-              <label class="form-check-label" for="q420">
-                Siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n4" id="q415" value="15">
-              <label class="form-check-label" for="q415">
-                Casi siempre
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n4" id="q410" value="10">
-              <label class="form-check-label" for="q410">
-                Pocas veces
-              </label>
-            </div>
-            <div class="form-check">
-              <input class="form-check-input" type="radio" name="n4" id="q405" value="5">
-              <label class="form-check-label" for="q405">
-                Nunca
-              </label>
-            </div>
-          </div>
+          @endforeach
         </div>
         <input type="hidden" name="id" value="{{ $cycleActive[0] }}">
         <button type="submit" class="btn btn-primary btn-md" style="width: 150px;">Enviar</button>
@@ -188,7 +121,9 @@
         if (n1.value == '' || n2.value == '' || n3.value == '' || n4.value == '') {
           Swal.fire({
             icon: 'error',
-            title: 'Debes completar el formulario'
+            title: 'Debes completar el formulario',
+            showConfirmButton: false,
+            timer: 3000
           })
         }
       });
@@ -236,32 +171,171 @@
 
       setInterval(refreshWeb, 1000);
     </script>
+
+    {{-- Validate Survey Tutor --}}
+  @elseif (count($cycleActive) == 3 && $type == 'tutor')
+    <div class="container px-4 mt-4 pb-4">
+      <h2 class="mb-4 text-center text-primary fw-bold" style="font-size: 2rem;">ENCUESTA AL TUTOR</h2>
+      <form action=" {{ route('encuesta_tutor.store') }}" method="POST" name="survey" id="survey"
+        class=""survey>
+        @csrf
+        <div class="questions text-secondary">
+          @foreach ($questions as $question)
+            <div class="mb-4 question">
+              <div class="mb-2 d-flex">
+                <span class="index-list">{{ $question->numero_pregunta }}. </span><b
+                  class="tagN{{ $question->numero_pregunta }}">{{ $question->pregunta }}</b>
+              </div>
+
+              <span>Nunca</span>
+              <div class="form-check my-2">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}1" value="1">
+                <label class="form-check-label" style="padding-left: 1rem;" style="padding-left: 1rem;"
+                  for="q{{ $question->numero_pregunta }}1">
+                  1
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}2" value="2">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}2">
+                  2
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}3" value="3">
+                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}3">
+                  3
+                </label>
+              </div>
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}4" value="4">
+                <label class="form-check-label" style="padding-left: 1rem;"
+                  for="q{{ $question->numero_pregunta }}4">
+                  4
+                </label>
+              </div>
+
+              <div class="form-check my-3">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}5" value="5">
+                <label class="form-check-label" style="padding-left: 1rem;"
+                  for="q{{ $question->numero_pregunta }}5">
+                  5
+                </label>
+              </div>
+              <span>Siempre</span>
+            </div>
+          @endforeach
+        </div>
+        <input type="hidden" name="id" value="{{ $cycleActive[0] }}">
+        <button type="submit" class="btn btn-primary btn-md" style="width: 150px;">Enviar</button>
+      </form>
+    </div>
+
+    <script>
+      //Fields
+      let n1 = document.survey.n1;
+      let n2 = document.survey.n2;
+      let n3 = document.survey.n3;
+      let n4 = document.survey.n4;
+      let n5 = document.survey.n5;
+      let n6 = document.survey.n6;
+      let n7 = document.survey.n7;
+      let n8 = document.survey.n8;
+
+      //tag
+      let tn1 = document.querySelector(".tagN1");
+      let tn2 = document.querySelector(".tagN2");
+      let tn3 = document.querySelector(".tagN3");
+      let tn4 = document.querySelector(".tagN4");
+      let tn5 = document.querySelector(".tagN5");
+      let tn6 = document.querySelector(".tagN6");
+      let tn7 = document.querySelector(".tagN7");
+      let tn8 = document.querySelector(".tagN8");
+
+      survey.addEventListener("submit", function(e) {
+        if (n1.value == '') {
+          tn1.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn1.classList.remove("text-danger");
+        }
+        if (n2.value == '') {
+          tn2.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn2.classList.remove("text-danger");
+        }
+        if (n3.value == '') {
+          tn3.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn3.classList.remove("text-danger");
+        }
+        if (n4.value == '') {
+          tn4.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn4.classList.remove("text-danger");
+        }
+        if (n5.value == '') {
+          tn5.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn5.classList.remove("text-danger");
+        }
+        if (n6.value == '') {
+          tn6.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn6.classList.remove("text-danger");
+        }
+        if (n7.value == '') {
+          tn7.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn7.classList.remove("text-danger");
+        }
+        if (n8.value == '') {
+          tn8.classList.add("text-danger");
+          e.preventDefault()
+        } else {
+          tn8.classList.remove("text-danger");
+        }
+
+        if (n1.value == '' || n2.value == '' || n3.value == '' || n4.value == '') {
+          Swal.fire({
+            icon: 'error',
+            title: 'Debes completar el formulario',
+            showConfirmButton: false,
+            timer: 3000
+          })
+        }
+      });
+    </script>
+
+    {{-- Validate many active Survey --}}
   @elseif (count($cycleActive) > 6)
     <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
       <div>
-        <button class="btn btn-primary d-block m-auto" id="btnUpddate">
-          <i class="fa-solid fa-arrow-rotate-right text-white"></i>
-        </button>
-        <h4 class="mt-2 text-center text-secondary">HAY MAS DE UNA ENCUESTA ACTIVA</h4>
+        <h4 class="mt-3 text-center text-secondary">HAY MAS DE UNA ENCUESTA ACTIVA</h4>
       </div>
     </div>
   @else
     <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
       <div>
-        <button class="btn btn-primary d-block m-auto" id="btnUpddate">
-          <i class="fa-solid fa-arrow-rotate-right text-white"></i>
-        </button>
-        <h4 class="mt-2 text-center text-secondary">NO HAY ENCUESTAS</h4>
+        <h4 class="mt-3 text-center text-secondary">NO HAY ENCUESTA ACTIVA</h4>
       </div>
     </div>
   @endif
 @else
   <div class="d-flex justify-content-center align-items-center" style="height: calc(100vh - 150px);">
     <div>
-      <button class="btn btn-primary d-block m-auto" id="btnUpddate">
-        <i class="fa-solid fa-arrow-rotate-right text-white"></i>
-      </button>
-      <h4 class="mt-2 text-center text-secondary">YA SE REALIZO LA ENCUESTA</h4>
+      <h4 class="mt-3 text-center text-secondary">LA ENCUESTA YA FUE ENVIADA</h4>
     </div>
   </div>
 @endif

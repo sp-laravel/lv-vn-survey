@@ -11,30 +11,35 @@ use Illuminate\Support\Facades\Auth;
 class Encuesta_docenteController extends Controller {
   public function store(Request $request) {
     // return $request->all();
-    // return $request->id;
 
+    // Get Dates
     $datetimeNow = Carbon::now();
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
 
+    // Validate Survey Status
     $teacher =  Horario_docente::where('id', $request->id)->get();
-    // return $teacher[0]->curso;
+    $horaryStatus =  $teacher[0]->estado;
 
-    $encuesta_docente = new Encuesta_docente();
-    $encuesta_docente->docente = $teacher[0]->docente;
-    $encuesta_docente->curso = $teacher[0]->asignatura;
-    $encuesta_docente->aula = $teacher[0]->aula;
+    if ($horaryStatus == 0) {
+      return redirect('/')->with('error', 'La encuesta ha finalizado');
+    } else {
+      $encuesta_docente = new Encuesta_docente();
+      $encuesta_docente->docente = $teacher[0]->docente;
+      $encuesta_docente->curso = $teacher[0]->asignatura;
+      $encuesta_docente->aula = $teacher[0]->aula;
 
-    $encuesta_docente->fecha = $dateNow;
-    $encuesta_docente->hora = $timeNow;
+      $encuesta_docente->fecha = $dateNow;
+      $encuesta_docente->hora = $timeNow;
 
-    $encuesta_docente->n1 = $request->n1;
-    $encuesta_docente->n2 = $request->n2;
-    $encuesta_docente->n3 = $request->n3;
-    $encuesta_docente->n4 = $request->n4;
-    $encuesta_docente->dni_alumno = Auth::user()->name;
-    $encuesta_docente->save();
+      $encuesta_docente->n1 = $request->n1;
+      $encuesta_docente->n2 = $request->n2;
+      $encuesta_docente->n3 = $request->n3;
+      $encuesta_docente->n4 = $request->n4;
+      $encuesta_docente->dni_alumno = Auth::user()->name;
+      $encuesta_docente->save();
 
-    return redirect('/')->with('success', 'Encuesta enviada correctamente');
+      return redirect('/')->with('success', 'Encuesta enviada');
+    }
   }
 }

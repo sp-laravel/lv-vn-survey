@@ -11,10 +11,9 @@ class Kernel extends ConsoleKernel {
    * Define the application's command schedule.
    */
   protected function schedule(Schedule $schedule): void {
+    $schedule->command('sheet:replicate')->dailyAt('17:26');
     // $schedule->command('inspire')->hourly();
-    $schedule->command('sheet:replicate')->dailyAt('17:32');
     // $schedule->command('sheet:replicate')->everyMinute();
-
     // $schedule->call(function () {
     //   $data = (new SheetController())->index();
     // })->everyMinute();

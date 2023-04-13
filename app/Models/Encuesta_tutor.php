@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Horario_docente extends Model {
-  protected $guarded = [];
+class Encuesta_tutor extends Model {
   use HasFactory;
+  public $timestamps = false;
   protected $connection = 'pgsql2';
-  protected $table = 'horario_docentes';
+  protected $table = 'encuesta_tutores';
 }

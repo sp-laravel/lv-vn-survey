@@ -19,11 +19,23 @@ class LoginRequest extends FormRequest {
 
   public function rules(): array {
     return [
-      'email' => ['required_without:name', 'string', 'email', 'exists:users,email'],
+      // 'email' => ['required_without:name', 'string', 'email', 'exists:users,email'],
+      // 'email' => ['required_without:name', 'string', 'exists:users'],
       'name' => ['required_without:email', 'string', 'exists:users,name'],
       'password' => ['required', 'string'],
       // 'g-recaptcha-response' => 'required',
       // 'g-recaptcha-response' => 'required|captcha',
+    ];
+  }
+
+  public function messages(): array {
+    return [
+      'name.required_without' => 'El campo usuario es obligatorio.',
+      'name.exists' => 'El campo usuario no existe.',
+      // 'email.required' => 'Email is required',
+      // 'email.email' => 'Email is invalid',
+      // 'password.required' => 'Password is required',
+      // 'password.min:6' => 'Password must be at least 6 characters',
     ];
   }
 

@@ -11,12 +11,12 @@ class SheetController extends Controller {
     $sheetdb = new SheetDB(config('services.sheetdb.key'));
     $sheets = $sheetdb->get();
     $rows = count($sheets);
-    // return $sheets;
 
+    // Validate Quantity rows
     if ($rows >= 1) {
       $table = "horario_docentes";
       $index = 0;
-      DB::table($table)->delete();
+      DB::connection('pgsql2')->table($table)->delete();
 
       foreach ($sheets as $sheet) {
         $index++;
@@ -27,14 +27,10 @@ class SheetController extends Controller {
         $start = $sheet->HORA_INICIO;
         $end = $sheet->HORA_FIN;
 
-        // array_push($data, [$index, $day, $cycle, $teacher, $class, $start, $end]);
         $dataAll = array('id' => $index, "dia" => $day, "aula" => $cycle, "docente" => $teacher, "asignatura" => $class, "h_inicio" => $start, "h_fin" => $end);
-        DB::table($table)->insert($dataAll);
+        DB::connection('pgsql2')->table($table)->insert($dataAll);
         $dataAll = [];
       }
-
-      // $dataOne = array('id' => $data[0][0], "dia" => $data[0][1], "aula" => $data[0][2], "docente" => $data[0][3], "asignatura" => $data[0][4], "h_inicio" => $data[0][5], "h_fin" => $data[0][6]);
-      // DB::table('horarios')->insert($dataOne);
       return $sheets;
     }
 

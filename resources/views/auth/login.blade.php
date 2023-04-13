@@ -32,8 +32,16 @@
       <x-input-label for="input_type" :value="__('Usuario')" />
       <x-text-input id="input_type" class="block w-full mt-1" type="text" name="input_type" :value="old('input_type')" autofocus
         autocomplete="name" />
-      <x-input-error :messages="$errors->get('email')" class="mt-2" />
+      {{-- <x-input-error :messages="$errors->get('email')" class="mt-2" /> --}}
       <x-input-error :messages="$errors->get('name')" class="mt-2" />
+      @if (session('success'))
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+          <small class="text-red-700">
+            {{ session('success') }}
+          </small>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      @endif
     </div>
 
     <!-- Password -->
@@ -46,6 +54,12 @@
       <x-input-error :messages="$errors->get('password')" class="mt-2" />
     </div>
 
+    <div class="mt-4 form-group" style="width: 100%;">
+      {!! NoCaptcha::renderJs('es', false, 'recaptchaCallback') !!}
+      {!! NoCaptcha::display() !!}
+      <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
+    </div>
+
     <!-- Remember Me -->
     <div class="flex justify-between gap-3 mt-4">
       <div class="">
@@ -55,19 +69,13 @@
           <span class="ml-2 text-sm text-gray-600">Recordarme</span>
         </label>
       </div>
-      <div class="">
+      {{-- <div class="">
         <label for="tutor" class="inline-flex items-center">
           <input id="tutor" type="checkbox"
             class="text-indigo-600 border-gray-300 rounded shadow-sm focus:ring-indigo-500" name="tutor">
           <span class="ml-2 text-sm text-gray-600">Tutor</span>
         </label>
-      </div>
-    </div>
-
-    <div class="w-full mt-3 form-group">
-      {!! NoCaptcha::renderJs('es', false, 'recaptchaCallback') !!}
-      {!! NoCaptcha::display() !!}
-      <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
+      </div> --}}
     </div>
 
     <div class="flex items-center justify-end mt-4">
