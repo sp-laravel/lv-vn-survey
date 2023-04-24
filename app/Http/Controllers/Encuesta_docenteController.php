@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Administrador;
 use App\Models\Encuesta_docente;
 use App\Models\Horario_docente;
 use Carbon\Carbon;
@@ -16,14 +17,25 @@ class Encuesta_docenteController extends Controller {
     $datetimeNow = Carbon::now();
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
+    $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
+    $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
+    $surveyTime = false;
 
     // Validate Survey Status
     $teacher =  Horario_docente::where('id', $request->id)->get();
     $horaryStatus =  $teacher[0]->estado;
 
-    if ($horaryStatus == 0) {
-      return redirect('/')->with('error', 'La encuesta ha finalizado');
-    } else {
+    $h_startAdd = strtotime($teacher[0]->h_fin) - ($surveyTimeStart);
+    $h_start =  date('H:i', $h_startAdd);
+    $h_endAdd = strtotime($teacher[0]->h_fin) + ($surveyTimeEnd);
+    $h_end = date('H:i', $h_endAdd);
+
+    if ($timeNow >= $h_start && $timeNow <= $h_end) {
+      $surveyTime = true;
+    }
+
+    // if ($horaryStatus >= 1 || $surveyTime == true) {
+    if ($horaryStatus >= 1) {
       $encuesta_docente = new Encuesta_docente();
       $encuesta_docente->docente = $teacher[0]->docente;
       $encuesta_docente->curso = $teacher[0]->asignatura;
@@ -40,6 +52,8 @@ class Encuesta_docenteController extends Controller {
       $encuesta_docente->save();
 
       return redirect('/')->with('success', 'Encuesta enviada');
+    } else {
+      return redirect('/')->with('error', 'La encuesta ha finalizado');
     }
   }
 }

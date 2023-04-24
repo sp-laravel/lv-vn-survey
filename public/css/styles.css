@@ -24,7 +24,7 @@ body{
 }
 
 .radio__loading--active {
-  display: flex;
+  display: block;
 }
 
 .horaryActive {

@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 class EncuestaTutorPreguntaController extends Controller {
   public function show() {
     $tutors = Encuesta_tutor_pregunta::orderBy('numero_pregunta')->get();
-    return view('tutor.index', compact('tutors'));
+    return view('questions.tutor', compact('tutors'));
   }
 
   public function store(Request $request) {

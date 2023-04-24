@@ -41,7 +41,7 @@
 
 <body>
   <!-- LOADING -->
-  <div class="loading w-100 vh-100 h-100 position-fixed justify-content-center align-items-center bg-white opacity-75">
+  <div class="bg-white opacity-75 loading w-100 vh-100 h-100 position-fixed justify-content-center align-items-center">
     <div>
       {{-- <i class="fa-solid fa-ban" style="font-size: 2rem;"></i> --}}
       {{-- <i class="fa-solid fa-arrows-rotate text-secondary" style="font-size: 2rem;"></i> --}}
@@ -57,14 +57,22 @@
       <div class="d-flex justify-content-between align-items-center">
         {{-- Logo --}}
         <div class="py-3">
-          <img src={{ url('/img/logo.png') }} width="150" alt="">
+          <a href="{{ route('welcome') }}"><img src={{ url('/img/logo.png') }} width="150" alt=""></a>
         </div>
 
         <h2 class="text-white fw-bold">ENCUESTAS</h2>
 
         {{-- Session --}}
         <div>
-          <div class="d-flex">
+          <div class="gap-3 d-flex">
+            {{-- <i class="text-white fa-solid fa-house" style="font-size: 2rem; cursor:pointer;" id="btn-home"></i> --}}
+            @if (isset($config))
+              @if ($config)
+                <a href="{{ route('dashboard') }}">
+                  <i class="text-white fa-solid fa-gear" style="font-size: 2rem; cursor:pointer;" id="btn-config"></i>
+                </a>
+              @endif
+            @endif
             {{-- <button class="m-auto btn btn-primary d-block" id="btnUpddate"> --}}
             {{-- <i class="text-warning fa-solid fa-arrow-rotate-right hover-effect" style="font-size: 2rem; cursor:pointer;"
               id="btnUpddate"></i> --}}
@@ -102,15 +110,7 @@
   </header>
 
   {{-- MAIN --}}
-  @if ($role == 'tutor')
-    <x-tutor :horaries="$horaries" :horarytimes="$horaryTimes" :horaryids="$horaryIds"></x-tutor>
-  @elseif ($role == 'coordinador')
-    <x-coordinator :cycles="$cycles"></x-coordinator>
-  @elseif($role == 'alumno')
-    <x-alumn :cycleactive="$cycleActive" :coursesurveysent="$courseSurveySent" :horarytimes="$horaryTimes" :type="$type" :questions="$questions"></x-alumn>
-  @elseif($role == 'admin')
-    <x-admin :sedes="$sedes"></x-admin>
-  @endif
+  @yield('content')
 
   <div class="update bg-primary" id="btnUpddate">
     <i class="text-white fa-solid fa-arrow-rotate-right hover-effect" style="font-size: 1.5rem;"></i>
@@ -120,7 +120,30 @@
   <script>
     let url = @json(url()->current());
   </script>
+  @if ($role == 'admin')
+    <script>
+      // div
+      // let btnHome = document.querySelector('#btn-home');
+      // let btnConfig = document.querySelector('#btn-config');
+
+      // btnHome.addEventListener('click', function() {
+      //   showHome();
+      // })
+      // btnConfig.addEventListener('click', function() {
+      //   showConfig();
+      // })
+
+      // Show Home
+      function showHome() {
+        $.get("{{ URL::to('director_show') }}", function(data) {
+          $('#config').empty().html(data);
+          console.log("config")
+        })
+      }
+    </script>
+  @endif
   <script src="{{ url('/js/scripts.js') }}"></script>
+  @yield('script')
 
 </body>
 

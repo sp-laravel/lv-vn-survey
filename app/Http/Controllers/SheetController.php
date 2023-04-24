@@ -27,7 +27,7 @@ class SheetController extends Controller {
         $start = $sheet->HORA_INICIO;
         $end = $sheet->HORA_FIN;
 
-        $dataAll = array('id' => $index, "dia" => $day, "aula" => $cycle, "docente" => $teacher, "asignatura" => $class, "h_inicio" => $start, "h_fin" => $end);
+        $dataAll = array('id' => $index, "dia" => $day, "aula" => $cycle, "docente" => $teacher, "asignatura" => $class, "h_inicio" => $start, "h_fin" => $end, "estado" => 0);
         DB::connection('pgsql2')->table($table)->insert($dataAll);
         $dataAll = [];
       }

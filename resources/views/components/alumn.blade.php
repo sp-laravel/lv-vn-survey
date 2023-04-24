@@ -77,8 +77,6 @@
 
     <script>
       //Data 
-      let horaryTimes = @json($horaryTimes);
-      let timeRunning = new Date();
       // console.log(horaryTimes);
 
       //Fields
@@ -127,49 +125,6 @@
           })
         }
       });
-
-      // Refresh Web by horary
-      function refreshWeb() {
-        let x = new Date()
-        let ampm = x.getHours() >= 12 ? '' : '';
-        hours = x.getHours();
-        hours = hours.toString().length == 1 ? 0 + hours.toString() : hours;
-
-        let minutes = x.getMinutes().toString()
-        minutes = minutes.length == 1 ? 0 + minutes : minutes;
-        let seconds = x.getSeconds().toString()
-        seconds = seconds.length == 1 ? 0 + seconds : seconds;
-        let month = (x.getMonth() + 1).toString();
-        month = month.length == 1 ? 0 + month : month;
-
-        let dt = x.getDate().toString();
-        dt = dt.length == 1 ? 0 + dt : dt;
-
-        // console.log(`${hours}:${minutes}:${seconds}`);
-
-        let hoursTemp = x.getHours();
-        let minutesTemp = x.getMinutes();
-        let secondsTemp = x.getSeconds();
-        timeRunning.setHours(hoursTemp, minutesTemp, secondsTemp);
-        let timeRunningNow = timeRunning.toLocaleTimeString();
-
-        horaryTimes.forEach(time => {
-          let timeHorary = new Date();
-          let timeTemp = time.split(':');
-          let extractHour = timeTemp[0];
-          let extractMinute = timeTemp[1];
-
-          timeHorary.setHours(extractHour, extractMinute, 00);
-          let timeHoraryActive = timeHorary.toLocaleTimeString();
-
-          if (timeRunningNow == timeHoraryActive) {
-            console.log("reload");
-            handleHardReload(url);
-          }
-        });
-      }
-
-      setInterval(refreshWeb, 1000);
     </script>
 
     {{-- Validate Survey Tutor --}}
@@ -187,47 +142,49 @@
                   class="tagN{{ $question->numero_pregunta }}">{{ $question->pregunta }}</b>
               </div>
 
-              <span>Nunca</span>
-              <div class="form-check my-2">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}1" value="1">
-                <label class="form-check-label" style="padding-left: 1rem;" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}1">
-                  1
-                </label>
-              </div>
-              <div class="form-check my-3">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}2" value="2">
-                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}2">
-                  2
-                </label>
-              </div>
-              <div class="form-check my-3">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}3" value="3">
-                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}3">
-                  3
-                </label>
-              </div>
-              <div class="form-check my-3">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}4" value="4">
-                <label class="form-check-label" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}4">
-                  4
-                </label>
-              </div>
+              <div class="content-radio d-flex gap-2">
+                {{-- <span>Nunca</span> --}}
+                <div class="form-check my-3">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}1" value="1">
+                  <label class="form-check-label" style="padding-left: 1rem;" style="padding-left: 1rem;"
+                    for="q{{ $question->numero_pregunta }}1">
+                    1
+                  </label>
+                </div>
+                <div class="form-check my-3">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}2" value="2">
+                  <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}2">
+                    2
+                  </label>
+                </div>
+                <div class="form-check my-3">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}3" value="3">
+                  <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}3">
+                    3
+                  </label>
+                </div>
+                <div class="form-check my-3">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}4" value="4">
+                  <label class="form-check-label" style="padding-left: 1rem;"
+                    for="q{{ $question->numero_pregunta }}4">
+                    4
+                  </label>
+                </div>
 
-              <div class="form-check my-3">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}5" value="5">
-                <label class="form-check-label" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}5">
-                  5
-                </label>
+                <div class="form-check my-3">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}5" value="5">
+                  <label class="form-check-label" style="padding-left: 1rem;"
+                    for="q{{ $question->numero_pregunta }}5">
+                    5
+                  </label>
+                </div>
+                {{-- <span>Siempre</span> --}}
               </div>
-              <span>Siempre</span>
             </div>
           @endforeach
         </div>
@@ -307,7 +264,8 @@
           tn8.classList.remove("text-danger");
         }
 
-        if (n1.value == '' || n2.value == '' || n3.value == '' || n4.value == '') {
+        if (n1.value == '' || n2.value == '' || n3.value == '' || n4.value == '' || n5.value == '' || n6.value == '' ||
+          n7.value == '' || n8.value == '') {
           Swal.fire({
             icon: 'error',
             title: 'Debes completar el formulario',
@@ -339,3 +297,51 @@
     </div>
   </div>
 @endif
+
+<script>
+  let horaryTimes = @json($horaryTimes);
+  let timeRunning = new Date();
+
+  // Refresh Web by horary
+  function refreshWeb() {
+    let x = new Date()
+    let ampm = x.getHours() >= 12 ? '' : '';
+    hours = x.getHours();
+    hours = hours.toString().length == 1 ? 0 + hours.toString() : hours;
+
+    let minutes = x.getMinutes().toString()
+    minutes = minutes.length == 1 ? 0 + minutes : minutes;
+    let seconds = x.getSeconds().toString()
+    seconds = seconds.length == 1 ? 0 + seconds : seconds;
+    let month = (x.getMonth() + 1).toString();
+    month = month.length == 1 ? 0 + month : month;
+
+    let dt = x.getDate().toString();
+    dt = dt.length == 1 ? 0 + dt : dt;
+
+    // console.log(`${hours}:${minutes}:${seconds}`);
+
+    let hoursTemp = x.getHours();
+    let minutesTemp = x.getMinutes();
+    let secondsTemp = x.getSeconds();
+    timeRunning.setHours(hoursTemp, minutesTemp, secondsTemp);
+    let timeRunningNow = timeRunning.toLocaleTimeString();
+
+    horaryTimes.forEach(time => {
+      let timeHorary = new Date();
+      let timeTemp = time.split(':');
+      let extractHour = timeTemp[0];
+      let extractMinute = timeTemp[1];
+
+      timeHorary.setHours(extractHour, extractMinute, 00);
+      let timeHoraryActive = timeHorary.toLocaleTimeString();
+
+      if (timeRunningNow == timeHoraryActive) {
+        console.log("reload");
+        handleHardReload(url);
+      }
+    });
+  }
+
+  setInterval(refreshWeb, 1000);
+</script>
