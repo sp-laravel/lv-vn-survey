@@ -86,8 +86,8 @@
       });
       $.ajax({
         type: 'POST',
-        // url: '/survey',
-        url: url + '/survey',
+        url: '/survey',
+        // url: url + '/survey',
         data: {
           id: dni,
           status: status,

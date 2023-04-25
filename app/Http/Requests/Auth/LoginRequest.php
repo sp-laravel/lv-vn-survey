@@ -23,7 +23,7 @@ class LoginRequest extends FormRequest {
       // 'email' => ['required_without:name', 'string', 'exists:users'],
       'name' => ['required_without:email', 'string', 'exists:users,name'],
       'password' => ['required', 'string'],
-      // 'g-recaptcha-response' => 'required',
+      'g-recaptcha-response' => 'required',
       // 'g-recaptcha-response' => 'required|captcha',
     ];
   }
