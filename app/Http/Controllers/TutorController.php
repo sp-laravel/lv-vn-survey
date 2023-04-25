@@ -24,6 +24,7 @@ class TutorController extends Controller {
     $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $cyclesMerge = [];
+    $status = 0;
 
     // Get Tutor Info
     $cycles = DB::select("SELECT DISTINCT
@@ -59,7 +60,8 @@ class TutorController extends Controller {
           AND TO_TIMESTAMP(to_char(now(),'HH24:MI:SS'), 'HH24:MI:SS')::TIME <= TO_TIMESTAMP((to_char(h_fin + INTERVAL '" . $surveyTimeEnd . "','HH24:MI:SS')), 'HH24:MI:SS')::TIME THEN 'Encuestando'
           ELSE 'No encuestado'
         END AS proceso,
-        estado
+        estado,
+        CONCAT('', ' ') as quantity
       FROM 
         horario_docentes
       WHERE 
@@ -84,8 +86,34 @@ class TutorController extends Controller {
         ->where('aula', $horary->aula)
         ->where('curso', $horary->asignatura)
         ->get();
+
+      // Get Alumns Info
+      $alumns = DB::select("SELECT DISTINCT
+          palu.dni AS dni_alumno,
+          al.email AS email_alumno,
+          initcap(palu.apellido_paterno||' '||palu.apellido_materno) AS apellido_alumno,
+          initcap(palu.nombres) AS nombre_alumno,
+          au.codigo_aula as codigo_final
+        FROM alumno_matricula am
+          INNER JOIN aulas au ON au.id = am.aula_id
+          INNER JOIN alumnos al ON al.codigo = am.alumno_codigo
+          INNER JOIN personas palu ON palu.dni = al.persona_dni
+          LEFT JOIN users us1 ON us1.id = au.tutor_id 
+          LEFT JOIN personas dus1 ON dus1.dni = us1.persona_dni
+        WHERE 
+          am.estado IN(2,3,9) 
+          AND am.estado_aula=1 
+          AND au.codigo_aula <> ''
+          AND au.codigo_aula IS NOT NULL
+          AND au.codigo_aula = '" . $horary->aula . "'  
+      ");
+
+      $quantityAlumns = $quantitySurvey->count() . "/" . count($alumns);
+      $horary->quantity = $quantityAlumns;
+
       // if (count($status) >= 1 && $horary->proceso == 'No encuestado') {
       if ($horary->estado >= 1) {
+        $status++;
         $horary->proceso = "Encuestando";
       } elseif (count($quantitySurvey) >= 1) {
         $horary->proceso = "Encuestado";
@@ -103,6 +131,65 @@ class TutorController extends Controller {
       // array_push($horaryTimes, $horary->h_fin, $horary->h_inicio);
       // array_push($horaryIdsMerge, $horary->id);
     }
-    return view('tutor.list', compact('horaries'));
+    return view('tutor.list', compact('horaries', 'status'));
+  }
+  public function surveyed(Request $request) {
+    // Data
+    $name = Auth::user()->name;
+    $email = Auth::user()->email;
+    $dni = Auth::user()->persona_dni;
+    $datetimeNow = Carbon::now();
+    $dateNow = $datetimeNow->toDateString();
+    $timeNow = $datetimeNow->toTimeString();
+    $surveyedsList = [];
+    $surveyedsOk = [];
+
+    $surveyeds = Encuesta_docente::where('aula', $request->aula)
+      ->where('curso', $request->curso)
+      ->where('docente', $request->docente)
+      ->where('fecha', $dateNow)
+      ->get();
+
+    foreach ($surveyeds as $surveyed) {
+      array_push($surveyedsOk, $surveyed->dni_alumno);
+    }
+
+    // Get cycles by Aula
+    $alumns = DB::select("SELECT DISTINCT
+        palu.dni AS dni_alumno,
+        al.email AS email_alumno,
+        initcap(palu.apellido_paterno||' '||palu.apellido_materno) AS apellido_alumno,
+        initcap(palu.nombres) AS nombre_alumno,
+        au.codigo_aula as codigo_final
+      FROM alumno_matricula am
+        INNER JOIN aulas au ON au.id = am.aula_id
+        INNER JOIN alumnos al ON al.codigo = am.alumno_codigo
+        INNER JOIN personas palu ON palu.dni = al.persona_dni
+        LEFT JOIN users us1 ON us1.id = au.tutor_id 
+        LEFT JOIN personas dus1 ON dus1.dni = us1.persona_dni
+      WHERE 
+        am.estado IN(2,3,9) 
+        AND am.estado_aula=1 
+        AND au.codigo_aula <> ''
+        AND au.codigo_aula IS NOT NULL
+        AND au.codigo_aula = '" . $request->aula . "'  
+      ORDER BY apellido_alumno
+    ");
+
+    foreach ($alumns as $alumn) {
+      $status  = "";
+      if (in_array($alumn->dni_alumno, $surveyedsOk)) {
+        $status = "on";
+      } else {
+        $status = "off";
+      }
+
+      $alumn->codigo_final = $status;
+
+      // array_push($surveyedsList, [$alumn->apellido_alumno, $status]);
+    }
+
+    // return $surveyedsList;
+    return view('tutor.surveyed', compact('alumns'));
   }
 }

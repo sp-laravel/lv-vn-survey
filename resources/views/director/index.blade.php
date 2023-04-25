@@ -1,4 +1,4 @@
-@extends('welcome2')
+@extends('welcome')
 
 @section('content')
   <div class="container mt-3">

@@ -25,5 +25,19 @@
           @if ($horary->estado == 1) checked @endif>
       </div>
     </td>
+    <td class="text-secondary">
+      <a data-bs-toggle="modal" data-bs-target="#modal-survey" data-aula="{{ $horary->aula }}"
+        data-curso="{{ $horary->asignatura }}" data-docente="{{ $horary->docente }}" class="text-primary loadSurveyed"
+        style="cursor: pointer;text-decoration: none;"><small>{{ $horary->quantity }}</small>
+      </a>
+    </td>
   </tr>
 @endforeach
+
+<script>
+  // Refresh surveyed
+  status = @json($status);
+  if (status >= 1) {
+    setInterval(showTutorList, 30000);
+  }
+</script>

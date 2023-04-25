@@ -1,4 +1,4 @@
-@extends('welcome2')
+@extends('welcome')
 
 @section('content')
   <div class="container mt-3">
@@ -21,19 +21,42 @@
         <table class="table table-striped table-hover">
           <thead>
             <tr class="bg-primary">
-              <th class="text-white" id="reload-table">INICIO</th>
+              <th class="text-white">INICIO</th>
               <th class="text-white">FIN</th>
               <th class="text-white">DOCENTE</th>
               <th class="text-white">CURSO</th>
               <th class="text-white">AULA</th>
               <th class="text-white">ESTADO</th>
               <th class="text-center text-white">ACTIVAR</th>
+              <th class="text-center text-white"><i id="reload-table" class="fa-solid fa-arrows-rotate"
+                  style="cursor: pointer;"></i></th>
             </tr>
           </thead>
 
           <tbody id="tutorBody">
           </tbody>
           <table>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal Survey -->
+  <div class="modal fade" id="modal-survey" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">
+            ALUMNOS ENCUESTADOS
+            <small id="title-survey"></small>
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul id="modal-body">
+
+          </ul>
+        </div>
       </div>
     </div>
   </div>
@@ -74,6 +97,15 @@
     function showTutorList() {
       $.get("{{ URL::to('tutor_list') }}", function(data) {
         $('#tutorBody').empty().html(data);
+        // console.log("reload table")
+      })
+    }
+
+    // Show surveyed List
+    function showSurveyedList(aula, curso, docente) {
+      let link = `tutor_surveyed/${aula}/${curso}/${docente}`;
+      $.get(`{{ URL::to('${link}') }}`, function(data) {
+        $('#modal-body').empty().html(data);
         // console.log("reload table")
       })
     }
@@ -195,8 +227,20 @@
       }
     }
 
+    // Edit Sede
+    $(document).on('click', '.loadSurveyed', function(event) {
+      // $('#modal-survey').modal('show');
+      let aula = $(this).data('aula');
+      let curso = $(this).data('curso');
+      let docente = $(this).data('docente');
+
+      showSurveyedList(aula, curso, docente);
+      console.log(aula);
+    });
+
     reloadTable.addEventListener('click', function() {
       showTutorList();
+      console.log("reload");
     })
   </script>
 @endsection

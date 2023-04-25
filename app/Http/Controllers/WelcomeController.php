@@ -293,7 +293,8 @@ class WelcomeController extends Controller {
         $questions = Encuesta_tutor_pregunta::orderBy('numero_pregunta')->get();
       }
 
-      return view('welcome', compact('role', 'dni', 'cycleActive', 'courseSurveySent', 'horaryTimes', 'type', 'questions'));
+      // return view('welcome2', compact('role', 'dni', 'cycleActive', 'courseSurveySent', 'horaryTimes', 'type', 'questions'));
+      return view('alumn.index', compact('role', 'dni', 'cycleActive', 'courseSurveySent', 'horaryTimes', 'type', 'questions'));
     } else {
       if (in_array($email, $admins)) {
         return redirect()->route('dashboard');

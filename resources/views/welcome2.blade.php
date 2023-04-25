@@ -57,22 +57,15 @@
       <div class="d-flex justify-content-between align-items-center">
         {{-- Logo --}}
         <div class="py-3">
-          <a href="{{ route('welcome') }}"><img src={{ url('/img/logo.png') }} width="150" alt=""></a>
+          <img src={{ url('/img/logo_short.png') }} height="54" alt="Vonex" class="d-sm-none">
+          <img src={{ url('/img/logo.png') }} width="150" alt="Vonex" class="d-none d-sm-block">
         </div>
 
-        <h2 class="text-white fw-bold">ENCUESTAS</h2>
+        <h2 class="text-white fw-bold title-app">ENCUESTAS</h2>
 
         {{-- Session --}}
         <div>
-          <div class="gap-3 d-flex">
-            {{-- <i class="text-white fa-solid fa-house" style="font-size: 2rem; cursor:pointer;" id="btn-home"></i> --}}
-            @if (isset($config))
-              @if ($config)
-                <a href="{{ route('dashboard') }}">
-                  <i class="text-white fa-solid fa-gear" style="font-size: 2rem; cursor:pointer;" id="btn-config"></i>
-                </a>
-              @endif
-            @endif
+          <div class="justify-end d-flex">
             {{-- <button class="m-auto btn btn-primary d-block" id="btnUpddate"> --}}
             {{-- <i class="text-warning fa-solid fa-arrow-rotate-right hover-effect" style="font-size: 2rem; cursor:pointer;"
               id="btnUpddate"></i> --}}
@@ -85,7 +78,8 @@
                   <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-dropdown-link class="text-white" style="text-decoration: none;" :href="route('logout')"
+                    <x-dropdown-link class="text-white d-block" style="text-decoration: none;width: 60px;"
+                      :href="route('logout')"
                       onclick="event.preventDefault();
                     this.closest('form').submit();">
                       {{-- Cerrar Sesion --}}
@@ -110,7 +104,15 @@
   </header>
 
   {{-- MAIN --}}
-  @yield('content')
+  @if ($role == 'tutor')
+    <x-tutor :horaries="$horaries" :horarytimes="$horaryTimes" :horaryids="$horaryIds"></x-tutor>
+  @elseif ($role == 'coordinador')
+    <x-coordinator :cycles="$cycles"></x-coordinator>
+  @elseif($role == 'alumno')
+    <x-alumn :cycleactive="$cycleActive" :coursesurveysent="$courseSurveySent" :horarytimes="$horaryTimes" :type="$type" :questions="$questions"></x-alumn>
+  @elseif($role == 'admin')
+    <x-admin :sedes="$sedes"></x-admin>
+  @endif
 
   <div class="update bg-primary" id="btnUpddate">
     <i class="text-white fa-solid fa-arrow-rotate-right hover-effect" style="font-size: 1.5rem;"></i>
@@ -120,30 +122,7 @@
   <script>
     let url = @json(url()->current());
   </script>
-  @if ($role == 'admin')
-    <script>
-      // div
-      // let btnHome = document.querySelector('#btn-home');
-      // let btnConfig = document.querySelector('#btn-config');
-
-      // btnHome.addEventListener('click', function() {
-      //   showHome();
-      // })
-      // btnConfig.addEventListener('click', function() {
-      //   showConfig();
-      // })
-
-      // Show Home
-      function showHome() {
-        $.get("{{ URL::to('director_show') }}", function(data) {
-          $('#config').empty().html(data);
-          console.log("config")
-        })
-      }
-    </script>
-  @endif
   <script src="{{ url('/js/scripts.js') }}"></script>
-  @yield('script')
 
 </body>
 

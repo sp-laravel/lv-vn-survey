@@ -10,8 +10,7 @@ use Illuminate\Support\Facades\DB;
 
 class Horario_docenteController extends Controller {
   public function update(Request $request) {
-    DB::connection('pgsql2')
-      ->table('horario_docentes')
+    DB::connection('pgsql2')->table('horario_docentes')
       ->where('id', $request->id)
       ->update(['estado' => $request->status]);
 
@@ -111,22 +110,19 @@ class Horario_docenteController extends Controller {
     // On Start
     if ($countStart >= 1) {
       // Disable All
-      DB::connection('pgsql2')
-        ->table('horario_docentes')
+      DB::connection('pgsql2')->table('horario_docentes')
         ->whereIn('aula', $aulasSelected)
         ->update(['estado' => 0]);
 
       // Active Time Selected
-      DB::connection('pgsql2')
-        ->table('horario_docentes')
+      DB::connection('pgsql2')->table('horario_docentes')
         ->whereIn('id', $idHorary)
         ->update(['estado' => 1]);
     }
 
     // Off End
     if ($countEnd >= 1) {
-      DB::connection('pgsql2')
-        ->table('horario_docentes')
+      DB::connection('pgsql2')->table('horario_docentes')
         ->whereIn('id', $idHoraryOff)
         ->update(['estado' => 0]);
     }

@@ -7,6 +7,7 @@ use App\Models\Estado_encuesta_tutor;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class Encuesta_tutorController extends Controller {
   public function store(Request $request) {
@@ -21,9 +22,22 @@ class Encuesta_tutorController extends Controller {
     $tutor =  Estado_encuesta_tutor::where('id', $request->id)->get();
     $tutorStatus =  $tutor[0]->estado;
 
-    if ($tutorStatus == 0) {
-      return redirect('/')->with('error', 'La encuesta ha finalizado');
-    } else {
+
+    // Survey Sent
+    $surveySent = DB::connection('pgsql2')->select("SELECT 
+        id
+      FROM 
+        encuesta_tutores
+      WHERE 
+        dni_alumno = '" . Auth::user()->name . "'
+        AND fecha = '" . $dateNow . "'
+        AND tutor = '" . $tutor[0]->dni_tutor . "'
+        AND aula = '" . $tutor[0]->aula . "'
+    ");
+    $courseSurveySent =  count($surveySent);
+
+    // if ($tutorStatus == 0) {
+    if ($tutorStatus >= 1 && $courseSurveySent < 1) {
       $encuesta_tutor = new Encuesta_tutor();
       $encuesta_tutor->tutor = $tutor[0]->dni_tutor;
       $encuesta_tutor->aula = $tutor[0]->aula;
@@ -43,6 +57,8 @@ class Encuesta_tutorController extends Controller {
       $encuesta_tutor->save();
 
       return redirect('/')->with('success', 'Encuesta enviada');
+    } else {
+      return redirect('/')->with('error', 'La encuesta ha finalizado');
     }
   }
 }

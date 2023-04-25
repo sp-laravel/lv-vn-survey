@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdministradorController;
+use App\Http\Controllers\AlumnoController;
 use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\Encuesta_docenteController;
 use App\Http\Controllers\Encuesta_tutorController;
@@ -28,8 +29,10 @@ Route::post('/horary', [Horario_docenteController::class, 'update'])->middleware
 Route::post('/survey', [Estado_encuesta_tutor::class, 'update'])->middleware(['auth', 'verified'])->name('survey');
 
 // LIST TABLES
-Route::get('/director_list', [DirectorController::class, 'show'])->middleware(['auth', 'verified'])->name('index');
-Route::get('/tutor_list', [TutorController::class, 'show'])->middleware(['auth', 'verified'])->name('index');
+Route::get('/director_list', [DirectorController::class, 'show'])->middleware(['auth', 'verified']);
+Route::get('/tutor_list', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
+Route::get('/tutor_surveyed/{aula}/{curso}/{docente}', [TutorController::class, 'surveyed'])->middleware(['auth', 'verified']);
+Route::get('/alumn_form', [AlumnoController::class, 'show'])->middleware(['auth', 'verified']);
 
 // SEDE
 Route::get('/sede_show', [Sede_directorController::class, 'show'])->middleware(['auth', 'verified'])->name('show');

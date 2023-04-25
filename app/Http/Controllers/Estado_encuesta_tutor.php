@@ -27,8 +27,7 @@ class Estado_encuesta_tutor extends Controller {
       $dataAll = array('email_coordinador' => Auth::user()->email, "estado" => $request->status, "fecha" => $dateNow, "hora" => $timeNow, "dni_tutor" => $request->id, "aula" => $request->aula);
       DB::connection('pgsql2')->table('estado_encuesta_tutores')->insert($dataAll);
     } else {
-      DB::connection('pgsql2')
-        ->table('estado_encuesta_tutores')
+      DB::connection('pgsql2')->table('estado_encuesta_tutores')
         ->where('email_coordinador', Auth::user()->email)
         ->where('dni_tutor', $request->id)
         ->where('aula', $request->aula)

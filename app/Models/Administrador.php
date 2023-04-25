@@ -11,6 +11,6 @@ class Administrador extends Model {
   protected $fillable = ['email'];
   protected $table = 'administradores';
 
-  public const TIMESURVEYSTART = -13;
+  public const TIMESURVEYSTART = -52;
   public const TIMESURVEYEND = 1;
 }
