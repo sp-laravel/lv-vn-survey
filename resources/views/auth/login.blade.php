@@ -54,11 +54,11 @@
       <x-input-error :messages="$errors->get('password')" class="mt-2" />
     </div>
 
-    <div class="mt-4 form-group" style="width: 100%;">
+    {{-- <div class="mt-4 form-group" style="width: 100%;">
       {!! NoCaptcha::renderJs('es', false, 'recaptchaCallback') !!}
       {!! NoCaptcha::display() !!}
       <x-input-error :messages="$errors->get('g-recaptcha-response')" class="mt-2" />
-    </div>
+    </div> --}}
 
     <!-- Remember Me -->
     <div class="flex justify-between gap-3 mt-4">
