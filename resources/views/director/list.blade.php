@@ -11,5 +11,8 @@
           value="{{ $cycle->estado }}" @if ($cycle->estado == 1) checked @endif>
       </div>
     </td>
+    <td class="text-center text-secondary">
+      <small>{{ $cycle->quantity }}</small>
+    </td>
   </tr>
 @endforeach

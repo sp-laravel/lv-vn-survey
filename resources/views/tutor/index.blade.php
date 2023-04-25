@@ -28,8 +28,9 @@
               <th class="text-white">AULA</th>
               <th class="text-white">ESTADO</th>
               <th class="text-center text-white">ACTIVAR</th>
-              <th class="text-center text-white"><i id="reload-table" class="fa-solid fa-arrows-rotate"
-                  style="cursor: pointer;"></i></th>
+              <th class="text-center text-white">
+                <i id="reload-table" class="fa-solid fa-arrows-rotate" style="cursor: pointer;"></i>
+              </th>
             </tr>
           </thead>
 
