@@ -47,7 +47,7 @@ class DirectorController extends Controller {
         INNER JOIN matriculas ma ON ma.id=au.matricula_id
         INNER JOIN locales lo ON lo.id = ma.local_id
       WHERE 
-        am.estado IN(2,3,9) 
+        am.estado IN(2,3) 
         AND am.estado_aula=1 
         AND au.codigo_aula <> ''
         AND au.codigo_aula IS NOT NULL 
@@ -84,7 +84,7 @@ class DirectorController extends Controller {
           LEFT JOIN users us1 ON us1.id = au.tutor_id 
           LEFT JOIN personas dus1 ON dus1.dni = us1.persona_dni
         WHERE 
-          am.estado IN(2,3,9) 
+          am.estado IN(2,3) 
           AND am.estado_aula=1 
           AND au.codigo_aula <> ''
           AND au.codigo_aula IS NOT NULL
