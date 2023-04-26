@@ -56,7 +56,8 @@ class WelcomeController extends Controller {
     $role = strtolower($perfil[0]->rol);
 
     // Validate Director
-    if (in_array($email, $listDirectors)) {
+    // if (in_array($email, $listDirectors)) {
+    if ($role == 'coordinador') {
       // Data
       $query = "";
       $sede = Sede_director::where('email_director', $email)->get();

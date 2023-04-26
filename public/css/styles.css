@@ -63,6 +63,16 @@ body{
 .title-app{
   font-size: 2.0rem;
 }
+
+.list-options{
+  list-style: none;
+  font-weight: bold;
+  width: 200px;
+  font-style: italic;
+}
+.list-options li{
+}
+
 @media only screen and (min-width: 380px) {
   .title-app{
     font-size: 2.8rem;

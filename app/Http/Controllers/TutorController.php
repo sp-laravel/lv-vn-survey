@@ -133,6 +133,7 @@ class TutorController extends Controller {
     }
     return view('tutor.list', compact('horaries', 'status'));
   }
+
   public function surveyed(Request $request) {
     // Data
     $name = Auth::user()->name;

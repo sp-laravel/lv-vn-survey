@@ -23,6 +23,7 @@
             <tr class="bg-primary">
               <th class="text-white">AULA</th>
               <th class="text-white">TUTOR</th>
+              <th class="text-white">ESTADO</th>
               <th class="text-center text-white">ACTIVAR</th>
               <th class="text-center text-white">
                 <i id="reload-table" class="fa-solid fa-arrows-rotate" style="cursor: pointer;"></i>
@@ -43,6 +44,8 @@
   <script>
     // Data
     let loadingRadios;
+
+    // Div
     let reloadTable = document.querySelector('#reload-table');
 
     // Field
@@ -97,7 +100,6 @@
           // $("#data").html(data.msg);
           // console.log("exito: " + data.msg);
         },
-
         error: function(msg) {
           console.log(msg);
           let errors = msg.responseJSON;
@@ -131,17 +133,28 @@
         }
 
         updateStatus(id, status, aula);
-        setTimeout(function() {
-          // for (const loading of loadingRadios) {
-          //   loading.classList.remove("radio__loading--active");
-          // }
-        }, 3000);
+        showDirectorList();
+        // setTimeout(function() {
+        // for (const loading of loadingRadios) {
+        //   loading.classList.remove("radio__loading--active");
+        // }
+        // }, 3000);
       }
     }
 
+    // Update Table
     reloadTable.addEventListener('click', function() {
       showDirectorList();
-      console.log("reload");
     })
+
+    // Verify Status
+    setInterval(validateStatus, 30000);
+
+    // Validate Status
+    function validateStatus() {
+      if (status >= 1) {
+        showDirectorList()
+      }
+    }
   </script>
 @endsection

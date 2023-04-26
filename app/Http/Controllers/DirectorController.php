@@ -19,6 +19,7 @@ class DirectorController extends Controller {
     $datetimeNow = Carbon::now();
     $dateNow = $datetimeNow->toDateString();
     $sedeMerge = [];
+    $status = 0;
 
     // Data
     $query = "";
@@ -39,6 +40,7 @@ class DirectorController extends Controller {
         au.codigo_aula as codigo_final,
         lo.nombre as sede,
         concat_ws('',0) AS estado,
+        CONCAT('', 'No encuestado') as proceso,
         CONCAT('', ' ') as quantity
       FROM alumno_matricula am
         INNER JOIN aulas au ON au.id = am.aula_id
@@ -57,7 +59,7 @@ class DirectorController extends Controller {
     ");
 
     // Get Status by Tutor
-    $tutorStatus =  DB::connection('pgsql2')->table('estado_encuesta_tutores')
+    $statusTutors =  DB::connection('pgsql2')->table('estado_encuesta_tutores')
       ->where('email_coordinador', Auth::user()->email)
       ->where('fecha', $dateNow)
       ->get();
@@ -93,12 +95,19 @@ class DirectorController extends Controller {
       $quantityAlumns = $quantitySurvey->count() . "/" . count($alumns);
       $cycle->quantity = $quantityAlumns;
 
-      foreach ($tutorStatus as $tutorStatu) {
-        if ($cycle->codigo_final == $tutorStatu->aula && $tutorStatu->estado == 1) {
+      // Validate Precess status
+      if (count($quantitySurvey) >= 1) {
+        $cycle->proceso = "Encuestado";
+      }
+      foreach ($statusTutors as $statusTutor) {
+        // $cycle->proceso = "Por encuestar";
+        if ($cycle->codigo_final == $statusTutor->aula && $statusTutor->estado == 1) {
           $cycle->estado = 1;
+          $status++;
+          $cycle->proceso = "Encuestando";
         }
       }
     }
-    return view('director.list', compact('cycles'));
+    return view('director.list', compact('cycles', 'status'));
   }
 }

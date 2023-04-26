@@ -101,7 +101,14 @@
 
     {{-- Validate Survey Tutor --}}
   @elseif (count($cycleActive) == 3 && $type == 'tutor')
-    <h2 class="mb-4 text-center text-primary fw-bold" style="font-size: 2rem;">ENCUESTA AL TUTOR</h2>
+    <h2 class="mb-3 text-center text-primary fw-bold" style="font-size: 2rem;">ENCUESTA AL TUTOR</h2>
+    <ul class="list-options text-primary m-auto mb-4">
+      <li><span class="text-secondary">1 = </span>Nunca</li>
+      <li><span class="text-secondary">2 = </span>Pocas veces</li>
+      <li><span class="text-secondary">3 = </span>Regularmente</li>
+      <li><span class="text-secondary">4 = </span>Casi siempre</li>
+      <li><span class="text-secondary">5 = </span>Siempre</li>
+    </ul>
     <form action=" {{ route('encuesta_tutor.store') }}" method="POST" name="survey" id="survey"
       class=""survey>
       @csrf

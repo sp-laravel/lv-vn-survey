@@ -35,9 +35,6 @@
 @endforeach
 
 <script>
-  // Refresh surveyed
+  // data
   status = @json($status);
-  if (status >= 1) {
-    setInterval(showTutorList, 30000);
-  }
 </script>

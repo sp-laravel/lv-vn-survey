@@ -2,6 +2,18 @@
   <tr>
     <td class="text-secondary">{{ $cycle->codigo_final }}</td>
     <td class="text-secondary">{{ $cycle->apellido_tutor }} {{ $cycle->nombre_tutor }}</td>
+    <td style="width: 110px;">
+      <span
+        @if ($cycle->proceso == 'Por encuestar') class="small text-info"
+      @elseif ($cycle->proceso == 'Encuestando')
+        class="small text-warning"
+      @elseif ($cycle->proceso == 'No encuestado')
+      class="small text-danger"
+      @else
+        class="small text-success" @endif>
+        {{ $cycle->proceso }}
+      </span>
+    </td>
     <td>
       <div class="form-check form-switch d-flex justify-content-center position-relative">
         <div class="radio__loading position-absolute"></div>
@@ -16,3 +28,8 @@
     </td>
   </tr>
 @endforeach
+
+<script>
+  // data
+  status = @json($status);
+</script>

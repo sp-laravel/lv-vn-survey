@@ -69,8 +69,10 @@
     // Data
     let horaryTimes = @json($horaryTimes);
     let timeRunning = new Date();
-    let reloadTable = document.querySelector('#reload-table');
     let loadingRadios;
+
+    // Div
+    let reloadTable = document.querySelector('#reload-table');
 
     // Field
     let horaryChecks = document.querySelectorAll(".horaryActive");
@@ -228,7 +230,7 @@
       }
     }
 
-    // Edit Sede
+    // Get List Surveyed
     $(document).on('click', '.loadSurveyed', function(event) {
       // $('#modal-survey').modal('show');
       let aula = $(this).data('aula');
@@ -236,12 +238,21 @@
       let docente = $(this).data('docente');
 
       showSurveyedList(aula, curso, docente);
-      console.log(aula);
     });
 
+    // Update Table
     reloadTable.addEventListener('click', function() {
       showTutorList();
-      console.log("reload");
     })
+
+    // Verify Status
+    setInterval(validateStatus, 30000);
+
+    // Validate Status
+    function validateStatus() {
+      if (status >= 1) {
+        showTutorList()
+      }
+    }
   </script>
 @endsection
