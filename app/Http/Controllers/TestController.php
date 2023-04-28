@@ -16,7 +16,7 @@ class TestController extends Controller {
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
 
-    $admin = Administrador::find('4');
+    $admin = Administrador::find('1');
     $admin->email = 'hencisos@vonex.edu.pe' . " - " . $timeNow;
     $admin->update();
   }
