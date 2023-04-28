@@ -35,6 +35,7 @@ class AdministradorController extends Controller {
       $config = true;
     }
 
+    // Validate View Admin
     if ($config) {
       return view('admin.index', compact('role', 'configFull'));
     } else {
