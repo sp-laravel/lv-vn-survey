@@ -11,7 +11,7 @@ class Administrador extends Model {
   protected $fillable = ['email'];
   protected $table = 'administradores';
 
-  public const TIMESURVEYSTART = -54;
+  public const TIMESURVEYSTART = 10;
   public const TIMESURVEYEND = 20;
   public const SUPERADMINS = ["jcuadros@vonex.edu.pe", "soporte@vonex.edu.pe"];
 }
