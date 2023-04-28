@@ -39,4 +39,8 @@ return [
     'key' => env('SHEETDB_KEY')
   ],
 
+  'api' => [
+    'survey-token' => env('API_SURVEY_TOKEN'),
+  ],
+
 ];

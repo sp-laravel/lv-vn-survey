@@ -19,8 +19,8 @@ class TutorController extends Controller {
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
     $todayDayFormat = Carbon::today()->format('l');
-    // $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
-    $todayDay = "Lunes";
+    $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
+    // $todayDay = "Lunes";
     $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $cyclesMerge = [];
@@ -180,9 +180,9 @@ class TutorController extends Controller {
     foreach ($alumns as $alumn) {
       $status  = "";
       if (in_array($alumn->dni_alumno, $surveyedsOk)) {
-        $status = "on";
+        $status = "Si";
       } else {
-        $status = "off";
+        $status = "-";
       }
 
       $alumn->codigo_final = $status;

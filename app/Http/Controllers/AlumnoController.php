@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Administrador;
 use App\Models\Encuesta_docente_pregunta;
+use App\Models\Encuesta_pregunta_opcion;
 use App\Models\Encuesta_tutor_pregunta;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -20,8 +21,8 @@ class AlumnoController extends Controller {
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
     $todayDayFormat = Carbon::today()->format('l');
-    // $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
-    $todayDay = "Lunes";
+    $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
+    // $todayDay = "Lunes";
     $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $cyclesMerge = [];
@@ -107,6 +108,7 @@ class AlumnoController extends Controller {
       $courseSurveySent =  count($surveySent);
       $type = "docente";
       $questions = Encuesta_docente_pregunta::orderBy('numero_pregunta')->get();
+      $options = Encuesta_pregunta_opcion::where('tipo', 'docente')->orderBy('indice', 'desc')->get();
     } else {
       // Get Cycle Active Tutor
       $SurveyActives = DB::connection('pgsql2')->select("SELECT 
@@ -140,8 +142,9 @@ class AlumnoController extends Controller {
 
       $type = "tutor";
       $questions = Encuesta_tutor_pregunta::orderBy('numero_pregunta')->get();
+      $options = Encuesta_pregunta_opcion::where('tipo', 'tutor')->orderBy('indice')->get();
     }
 
-    return view('alumn.form', compact('cycleActive', 'courseSurveySent', 'type', 'questions'));
+    return view('alumn.form', compact('cycleActive', 'courseSurveySent', 'type', 'questions', 'options'));
   }
 }

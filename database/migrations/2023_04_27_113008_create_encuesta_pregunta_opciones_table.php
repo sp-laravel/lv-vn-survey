@@ -9,14 +9,12 @@ return new class extends Migration {
    * Run the migrations.
    */
   public function up(): void {
-    Schema::create('estado_encuesta_tutores', function (Blueprint $table) {
+    Schema::create('encuesta_pregunta_opciones', function (Blueprint $table) {
       $table->id();
-      $table->string('email_coordinador');
-      $table->integer('estado');
-      $table->date('fecha');
-      $table->time('hora');
-      $table->string('dni_tutor');
-      $table->string('aula');
+      $table->integer('indice');
+      $table->string('opcion', 100);
+      $table->integer('valor');
+      $table->string('tipo', 50);
       $table->timestamps();
     });
   }
@@ -25,6 +23,6 @@ return new class extends Migration {
    * Reverse the migrations.
    */
   public function down(): void {
-    Schema::dropIfExists('estado_encuesta_tutores');
+    Schema::dropIfExists('encuesta_pregunta_opciones');
   }
 };

@@ -127,7 +127,6 @@ class Horario_docenteController extends Controller {
         ->update(['estado' => 0]);
     }
 
-
     return $idHorary;
   }
 }

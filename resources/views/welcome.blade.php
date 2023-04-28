@@ -4,14 +4,15 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow" />
   {{-- <meta http-equiv="Cache-control" content="no-cache"> --}}
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv='expires' content='-1'>
   <meta http-equiv='pragma' content='no-cache'>
 
-  @if ($role == 'tutor' || $role == 'coordinador' || $role == 'admin')
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-  @endif
+  {{-- @if ($role == 'tutor' || $role == 'coordinador' || $role == 'admin') --}}
+  <meta name="csrf-token" content="{{ csrf_token() }}">
+  {{-- @endif --}}
 
 
   <title>Encuestas Vonex</title>
@@ -57,8 +58,10 @@
       <div class="d-flex justify-content-between align-items-center">
         {{-- Logo --}}
         <div class="py-3">
-          <img src={{ url('/img/logo_short.png') }} height="54" alt="Vonex" class="d-sm-none">
-          <img src={{ url('/img/logo.png') }} width="150" alt="Vonex" class="d-none d-sm-block">
+          <a href="{{ route('welcome') }}">
+            <img src={{ url('/img/logo_short.png') }} height="54" alt="Vonex" class="d-sm-none">
+            <img src={{ url('/img/logo.png') }} width="150" alt="Vonex" class="d-none d-sm-block">
+          </a>
         </div>
 
         <h2 class="text-white fw-bold title-app">ENCUESTAS</h2>
@@ -67,13 +70,17 @@
         <div>
           <div class="gap-3 d-flex justify-content-end">
             {{-- <i class="text-white fa-solid fa-house" style="font-size: 2rem; cursor:pointer;" id="btn-home"></i> --}}
-            @if (isset($config))
+            {{-- @if (isset($config))
               @if ($config)
                 <a href="{{ route('dashboard') }}">
                   <i class="text-white fa-solid fa-gear" style="font-size: 2rem; cursor:pointer;" id="btn-config"></i>
                 </a>
               @endif
-            @endif
+            @endif --}}
+            <div class="pt-2">
+              @yield('menu')
+            </div>
+
             {{-- <button class="m-auto btn btn-primary d-block" id="btnUpddate"> --}}
             {{-- <i class="text-warning fa-solid fa-arrow-rotate-right hover-effect" style="font-size: 2rem; cursor:pointer;"
               id="btnUpddate"></i> --}}

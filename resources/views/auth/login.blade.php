@@ -62,13 +62,13 @@
 
     <!-- Remember Me -->
     <div class="flex justify-between gap-3 mt-4">
-      <div class="">
+      {{-- <div class="">
         <label for="remember_me" class="inline-flex items-center">
           <input id="remember_me" type="checkbox"
             class="text-indigo-600 border-gray-300 rounded shadow-sm focus:ring-indigo-500" name="remember">
           <span class="ml-2 text-sm text-gray-600">Recordarme</span>
         </label>
-      </div>
+      </div> --}}
       {{-- <div class="">
         <label for="tutor" class="inline-flex items-center">
           <input id="tutor" type="checkbox"
@@ -81,7 +81,7 @@
     <div class="flex items-center justify-end mt-4">
 
       <x-primary-button class="text-center">
-        {{ __('Log in') }}
+        Iniciar sesión
       </x-primary-button>
     </div>
   </form>

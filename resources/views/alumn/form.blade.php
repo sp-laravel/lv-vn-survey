@@ -12,34 +12,17 @@
               <span class="index-list">{{ $question->numero_pregunta }}. </span>
               <b class="tagN{{ $question->numero_pregunta }}">{{ $question->pregunta }}</b>
             </div>
-            <div class="my-3 form-check">
-              <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                id="q{{ $question->numero_pregunta }}20" value="20">
-              <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}20">
-                Siempre
-              </label>
-            </div>
-            <div class="my-3 form-check">
-              <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                id="q{{ $question->numero_pregunta }}15" value="15">
-              <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}15">
-                Casi siempre
-              </label>
-            </div>
-            <div class="my-3 form-check">
-              <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                id="q{{ $question->numero_pregunta }}10" value="10">
-              <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}10">
-                Pocas veces
-              </label>
-            </div>
-            <div class="my-3 form-check">
-              <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                id="q{{ $question->numero_pregunta }}05" value="5">
-              <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}05">
-                Nunca
-              </label>
-            </div>
+
+            @foreach ($options as $option)
+              <div class="my-3 form-check">
+                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                  id="q{{ $question->numero_pregunta }}{{ $option->valor }}" value="{{ $option->valor }}">
+                <label class="form-check-label" style="padding-left: 1rem;"
+                  for="q{{ $question->numero_pregunta }}{{ $option->valor }}">
+                  {{ $option->opcion }}
+                </label>
+              </div>
+            @endforeach
           </div>
         @endforeach
       </div>
@@ -121,47 +104,16 @@
             </div>
 
             <div class="gap-2 content-radio d-flex">
-              {{-- <span>Nunca</span> --}}
-              <div class="my-3 form-check">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}1" value="1">
-                <label class="form-check-label" style="padding-left: 1rem;" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}1">
-                  1
-                </label>
-              </div>
-              <div class="my-3 form-check">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}2" value="2">
-                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}2">
-                  2
-                </label>
-              </div>
-              <div class="my-3 form-check">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}3" value="3">
-                <label class="form-check-label" style="padding-left: 1rem;" for="q{{ $question->numero_pregunta }}3">
-                  3
-                </label>
-              </div>
-              <div class="my-3 form-check">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}4" value="4">
-                <label class="form-check-label" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}4">
-                  4
-                </label>
-              </div>
-
-              <div class="my-3 form-check">
-                <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
-                  id="q{{ $question->numero_pregunta }}5" value="5">
-                <label class="form-check-label" style="padding-left: 1rem;"
-                  for="q{{ $question->numero_pregunta }}5">
-                  5
-                </label>
-              </div>
-              {{-- <span>Siempre</span> --}}
+              @foreach ($options as $option)
+                <div class="my-3 form-check">
+                  <input class="form-check-input" type="radio" name="n{{ $question->numero_pregunta }}"
+                    id="q{{ $question->numero_pregunta }}{{ $option->valor }}" value="{{ $option->valor }}">
+                  <label class="form-check-label" style="padding-left: 1rem;" style="padding-left: 1rem;"
+                    for="q{{ $question->numero_pregunta }}{{ $option->valor }}">
+                    {{ $option->opcion }}
+                  </label>
+                </div>
+              @endforeach
             </div>
           </div>
         @endforeach

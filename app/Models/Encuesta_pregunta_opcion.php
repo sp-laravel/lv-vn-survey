@@ -5,9 +5,9 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Estado_encuesta_tutor extends Model {
+class Encuesta_pregunta_opcion extends Model {
   use HasFactory;
-  // protected $guarded = [];
   protected $connection = 'pgsql2';
-  protected $table = 'estado_encuesta_tutores';
+  protected $fillable = ['indice', 'opcion', 'valor'];
+  protected $table = 'encuesta_pregunta_opciones';
 }

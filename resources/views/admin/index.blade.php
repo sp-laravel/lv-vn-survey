@@ -1,5 +1,18 @@
 @extends('welcome')
 
+@section('menu')
+  {{-- @if (isset($config))
+    @if ($config)
+    @else
+      {{ route('welcome') }}
+    @endif
+  @endif --}}
+  <a href="{{ route('welcome') }}">
+    {{-- <i class="text-white fa-solid fa-gear" id="btn-config"></i> --}}
+    <i class="text-white fa-solid fa-house" style="font-size: 2rem; cursor:pointer;"></i>
+  </a>
+@endsection
+
 @section('content')
   <div class="container mt-3">
     {{-- Top Block --}}
@@ -15,8 +28,39 @@
       <div></div>
     </div>
 
-    {{-- Sede Block --}}
+    {{-- Bottom Block --}}
     <div class="tables-group">
+
+      @if (isset($configFull))
+        @if ($configFull)
+          {{-- Table Amin --}}
+          <div class="">
+            <h4 class="mt-4 text-secondary">GESTIÓN ADMINISTRADORES</h4>
+          </div>
+          <div class="mt-3 table-responsive">
+            <table class="table border rounded table-striped table-hover">
+              <thead>
+                <tr class="bg-info ">
+                  <th class="text-white">USUARIO</th>
+                  <th>
+                    <div class="gap-1 d-flex justify-content-end w-100">
+                      <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal"
+                        data-bs-target="#modal-admin-add">
+                        <i class="text-white fa-regular fa-square-plus"></i>
+                      </button>
+                    </div>
+                  </th>
+                </tr>
+              </thead>
+              {{-- List --}}
+              <tbody id="adminBody">
+              </tbody>
+
+            </table>
+          </div>
+        @endif
+      @endif
+
       {{-- Table Sede --}}
       <div class="">
         <h4 class="mt-4 text-secondary">ASIGNACIÓN DE DIRECTOR A SEDE</h4>
@@ -52,7 +96,7 @@
         <table class="table border rounded table-striped table-hover">
           <thead>
             <tr class="bg-success">
-              <th class="text-white">NUMERO</th>
+              <th class="text-white">INDICE</th>
               <th class="text-white">PREGUNTA</th>
               <th>
                 <div class="gap-1 d-flex justify-content-end w-100">
@@ -69,6 +113,28 @@
           </tbody>
         </table>
       </div>
+      <div class="mt-3 table-responsive">
+        <table class="table border rounded table-striped table-hover">
+          <thead>
+            <tr class="bg-success">
+              <th class="text-white">INDICE</th>
+              <th class="text-white">OPCIÓN</th>
+              <th class="text-white">VALOR</th>
+              <th>
+                <div class="gap-1 d-flex justify-content-end w-100">
+                  <button type="button" class="btn btn-sm btn-success addOption" data-bs-toggle="modal"
+                    data-bs-target="#modal-option-add" data-type="docente">
+                    <i class="text-white fa-regular fa-square-plus"></i>
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          {{-- List --}}
+          <tbody id="optionTeacherBody">
+          </tbody>
+        </table>
+      </div>
 
       {{-- Table Tutor --}}
       <div class="">
@@ -77,8 +143,8 @@
       <div class="mt-3 table-responsive">
         <table class="table border rounded table-striped table-hover">
           <thead>
-            <tr class="bg-success">
-              <th class="text-white">NUMERO</th>
+            <tr class="bg-warning">
+              <th class="text-white">INDICE</th>
               <th class="text-white">PREGUNTA</th>
               <th>
                 <div class="gap-1 d-flex justify-content-end w-100">
@@ -95,8 +161,100 @@
           </tbody>
         </table>
       </div>
+      <div class="mt-3 table-responsive">
+        <table class="table border rounded table-striped table-hover">
+          <thead>
+            <tr class="bg-warning">
+              <th class="text-white">INDICE</th>
+              <th class="text-white">OPCIÓN</th>
+              <th class="text-white">VALOR</th>
+              <th>
+                <div class="gap-1 d-flex justify-content-end w-100">
+                  <button type="button" class="btn btn-sm btn-warning addOption" data-bs-toggle="modal"
+                    data-bs-target="#modal-option-add" data-type="tutor">
+                    <i class="text-white fa-regular fa-square-plus"></i>
+                  </button>
+                </div>
+              </th>
+            </tr>
+          </thead>
+          {{-- List --}}
+          <tbody id="optionTutorBody">
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
+
+  <!-- Modal Add Admin -->
+  <div class="modal fade" id="modal-admin-add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">AGREGAR ADMINISTRADOR</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('admin_store') }}" id="addFormAdmin" method="POST">
+            <div class="mb-3">
+              <label for="admin">email</label>
+              <input type="email" name="email" class="form-control" required>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Edit Admin -->
+  <div class="modal fade" id="modal-admin-edit" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">EDITAR ADMINISTRADOR</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('admin_update') }}" id="editFormAdmin" method="POST">
+            <input type="hidden" id="id_admin" name="id">
+            <div class="mb-3">
+              <label for="admin">Email</label>
+              <input type="email" name="email" id="email_admin" class="form-control" required>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Actualizar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Delete Admin -->
+  <div class="modal fade" id="modal-admin-delete" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-primary" id="myModalLabel">ELIMINAR ADMINISTRADOR</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5 class="text-center text-secondary">Esta seguro de eliminar el email?</h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="delete-admin" class="btn btn-danger">Eliminar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 
   <!-- Modal Add Sede -->
   <div class="modal fade" id="modal-sede-add" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -170,7 +328,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" id="delete-sede" class="btn btn-danger">Eliminar</button>
-          </form>
         </div>
       </div>
     </div>
@@ -190,7 +347,8 @@
           <form action="{{ URL::to('teacher_store') }}" id="addFormTeacher" method="POST">
             <div class="mb-3">
               <label for="numero_pregunta">Numero de Pregunta</label>
-              <input type="text" name="numero_pregunta" class="form-control" required>
+              <input type="text" name="numero_pregunta" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
             </div>
             <div class="mb-3">
               <label for="pregunta">Pregunta</label>
@@ -222,7 +380,8 @@
             <input type="hidden" id="id_teacher" name="id">
             <div class="mb-3">
               <label for="numero_pregunta">Numero de Pregunta</label>
-              <input type="text" name="numero_pregunta" id="numero_pregunta_teacher" class="form-control" required>
+              <input type="text" name="numero_pregunta" id="numero_pregunta_teacher" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
             </div>
             <div class="mb-3">
               <label for="pregunta">Pregunta</label>
@@ -253,7 +412,6 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
           <button type="button" id="delete-teacher" class="btn btn-danger">Eliminar</button>
-          </form>
         </div>
       </div>
     </div>
@@ -272,7 +430,8 @@
           <form action="{{ URL::to('tutor_store') }}" id="addFormTutor" method="POST">
             <div class="mb-3">
               <label for="numero_pregunta">Numero de Pregunta</label>
-              <input type="text" name="numero_pregunta" class="form-control" required>
+              <input type="text" name="numero_pregunta" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
             </div>
             <div class="mb-3">
               <label for="pregunta">Pregunta</label>
@@ -304,7 +463,8 @@
             <input type="hidden" id="id_tutor" name="id">
             <div class="mb-3">
               <label for="numero_pregunta">Numero de Pregunta</label>
-              <input type="text" name="numero_pregunta" id="numero_pregunta_tutor" class="form-control" required>
+              <input type="text" name="numero_pregunta" id="numero_pregunta_tutor" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
             </div>
             <div class="mb-3">
               <label for="pregunta">Pregunta</label>
@@ -340,6 +500,101 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Modal Add Option -->
+  <div class="modal fade" id="modal-option-add" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-primary">AGREGAR OPCIÓN ENCUESTA <span id="title-name-add"></span></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('option_store') }}" id="addFormOption" method="POST">
+            <input type="hidden" name="type_option" id="type_option" value="">
+            <div class="mb-3">
+              <label for="index_option">Indice de opción</label>
+              <input type="text" name="index_option" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
+            </div>
+            <div class="mb-3">
+              <label for="name_option">Nombre de opción</label>
+              <input type="text" name="name_option" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="value_option">Valor de opción</label>
+              <input type="text" name="value_option" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Edit Option -->
+  <div class="modal fade" id="modal-option-edit" tabindex="-1" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5 text-primary" id="exampleModalLabel">EDITAR OPCIÓN ENCUESTA <span
+              id="title-name-edit"></span></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form action="{{ URL::to('option_update') }}" id="editFormOption" method="POST">
+            <input type="hidden" name="id" id="id_option">
+            <div class="mb-3">
+              <label for="index_option">Indice de opción</label>
+              <input type="text" name="index_option" id="index_option" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
+            </div>
+            <div class="mb-3">
+              <label for="name_option">Nombre de opción</label>
+              <input type="text" name="name_option" id="name_option" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="value_option">Valor de opción</label>
+              <input type="text" name="value_option" id="value_option" class="form-control"
+                onkeypress="if ( isNaN( String.fromCharCode(event.keyCode) )) return false;" required>
+            </div>
+
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+              <button type="submit" class="btn btn-primary">Guardar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal Delete Option -->
+  <div class="modal fade" id="modal-option-delete" tabindex="-1" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-primary" id="myModalLabel">ELIMINAR PREGUNTA ENCUESTA <span
+              id="title-name-delete"></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <h5 class="text-center text-secondary">Esta seguro de eliminar la opción?</h5>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" id="delete-option" class="btn btn-danger">Eliminar</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 
@@ -361,8 +616,10 @@
   <script>
     // Load
     $(document).ready(function() {
+      showAdmins();
       showSedes();
       showTeachers();
+      showOptions()
       showTutors();
     })
 
@@ -373,13 +630,79 @@
       },
     });
 
+    // Show Amin
+    function showAdmins() {
+      $.get("{{ URL::to('admin_show') }}", function(data) {
+        $('#adminBody').empty().html(data);
+      })
+    }
+    // Add Admin
+    $('#addFormAdmin').on('submit', function(e) {
+      e.preventDefault();
+      let form = $(this).serialize();
+      // let urlForm = $(this).serialize();
+      $.ajax({
+        type: 'POST',
+        url: '/admin_store',
+        // url: url + '/admin_store',
+        data: form,
+        success: function(data) {
+          $('#modal-admin-add').modal('hide');
+          $('#addFormAdmin')[0].reset();
+          showAdmins();
+        },
+
+        error: function(msg) {
+          console.log(msg);
+          let errors = msg.responseJSON;
+        }
+      });
+    });
+    // Edit Admin
+    $(document).on('click', '.editAdmin', function(event) {
+      event.preventDefault();
+      let id = $(this).data('id');
+      let email = $(this).data('email');
+
+      $('#modal-admin-edit').modal('show');
+      $('#email_admin').val(email);
+      $('#id_admin').val(id);
+    });
+    // Update Admin
+    $('#editFormAdmin').on('submit', function(e) {
+      e.preventDefault();
+      let form = $(this).serialize();
+      let urlForm = $(this).attr('action');
+      $.post(urlForm, form, function(data) {
+        $('#modal-admin-edit').modal('hide');
+        showAdmins();
+      })
+    });
+    // Delete Admin
+    $(document).on('click', '.deleteAdmin', function(event) {
+      event.preventDefault();
+      let id = $(this).data('id');
+      $('#modal-admin-delete').modal('show');
+      $('#delete-admin').val(id);
+    });
+    // Destroy Admin
+    $('#delete-admin').click(function() {
+      var id = $(this).val();
+      $.post("{{ URL::to('admin_delete') }}", {
+        id: id
+      }, function() {
+        $('#modal-admin-delete').modal('hide');
+        showAdmins();
+      })
+    });
+
+
     // Show Sede
     function showSedes() {
       $.get("{{ URL::to('sede_show') }}", function(data) {
         $('#sedeBody').empty().html(data);
       })
     }
-
     // Add Sede
     $('#addFormSede').on('submit', function(e) {
       e.preventDefault();
@@ -457,7 +780,7 @@
       $.ajax({
         type: 'POST',
         // url: urlForm,
-        url: url + '/teacher_store',
+        url: '/teacher_store',
         data: form,
         success: function(data) {
           $('#modal-teacher-add').modal('hide');
@@ -510,7 +833,6 @@
         showTeachers();
       })
     });
-
 
 
     // Show Tutor
@@ -578,6 +900,91 @@
       }, function() {
         $('#modal-tutor-delete').modal('hide');
         showTutors();
+      })
+    });
+
+
+    // Show Option
+    function showOptions() {
+      $.get("{{ URL::to('option_show/docente') }}", function(data) {
+        $('#optionTeacherBody').empty().html(data);
+      })
+      $.get("{{ URL::to('option_show/tutor') }}", function(data) {
+        $('#optionTutorBody').empty().html(data);
+      })
+    }
+    // Add Option
+    $('#addFormOption').on('submit', function(e) {
+      e.preventDefault();
+      let form = $(this).serialize();
+      // let urlForm = $(this).serialize();
+      $.ajax({
+        type: 'POST',
+        // url: url + '/option_store',
+        url: '/option_store',
+        data: form,
+        success: function(data) {
+          $('#modal-option-add').modal('hide');
+          $('#addFormOption')[0].reset();
+          showOptions();
+        },
+
+        error: function(msg) {
+          console.log(msg);
+          let errors = msg.responseJSON;
+        }
+      });
+    });
+    // Add Option Type
+    $(document).on('click', '.addOption', function(event) {
+      let type = $(this).data('type');
+      $('#type_option').val(type);
+      $('#title-name-add').text(type.toUpperCase());
+    });
+    // Edit Option
+    $(document).on('click', '.editOption', function(event) {
+      event.preventDefault();
+      let id = $(this).data('id');
+      let indice = $(this).data('indice');
+      let opcion = $(this).data('opcion');
+      let valor = $(this).data('valor');
+      let type = $(this).data('type');
+
+      $('#modal-option-edit').modal('show');
+      $('#index_option').val(indice);
+      $('#name_option').val(opcion);
+      $('#value_option').val(valor);
+      $('#id_option').val(id);
+      $('#title-name-edit').text(type.toUpperCase());
+    });
+    // Update Option
+    $('#editFormOption').on('submit', function(e) {
+      e.preventDefault();
+      let form = $(this).serialize();
+      let urlForm = $(this).attr('action');
+      $.post(urlForm, form, function(data) {
+        $('#modal-option-edit').modal('hide');
+        showOptions();
+      })
+    });
+    // Delete Option
+    $(document).on('click', '.deleteOption', function(event) {
+      event.preventDefault();
+      let id = $(this).data('id');
+      let type = $(this).data('type');
+
+      $('#modal-option-delete').modal('show');
+      $('#delete-option').val(id);
+      $('#title-name-delete').text(type.toUpperCase());
+    });
+    // Destroy Option
+    $('#delete-option').click(function() {
+      var id = $(this).val();
+      $.post("{{ URL::to('option_delete') }}", {
+        id: id
+      }, function() {
+        $('#modal-option-delete').modal('hide');
+        showOptions();
       })
     });
   </script>

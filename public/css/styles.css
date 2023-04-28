@@ -70,7 +70,23 @@ body{
   width: 200px;
   font-style: italic;
 }
-.list-options li{
+
+.list-options-questions{
+  list-style: none;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+}
+
+#modal-body{
+}
+#modal-body li{
+  padding: 3px 10px;
+  background-color: #f5f5f5;
+  margin-bottom: 3px;
+}
+#modal-body li:hover{
+  background-color: #e2e2e2;
 }
 
 @media only screen and (min-width: 380px) {

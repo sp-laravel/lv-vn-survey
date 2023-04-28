@@ -24,7 +24,16 @@ class Estado_encuesta_tutor extends Controller {
     $statusQuantity =  count($status);
 
     if ($statusQuantity == 0) {
-      $dataAll = array('email_coordinador' => Auth::user()->email, "estado" => $request->status, "fecha" => $dateNow, "hora" => $timeNow, "dni_tutor" => $request->id, "aula" => $request->aula);
+      $dataAll = array(
+        'email_coordinador' => Auth::user()->email,
+        "estado" => $request->status,
+        "fecha" => $dateNow,
+        "hora" => $timeNow,
+        "dni_tutor" => $request->id,
+        "aula" => $request->aula,
+        "created_at" => $datetimeNow,
+        "updated_at" => $datetimeNow
+      );
       DB::connection('pgsql2')->table('estado_encuesta_tutores')->insert($dataAll);
     } else {
       DB::connection('pgsql2')->table('estado_encuesta_tutores')
@@ -32,7 +41,7 @@ class Estado_encuesta_tutor extends Controller {
         ->where('dni_tutor', $request->id)
         ->where('aula', $request->aula)
         ->where('fecha', $dateNow)
-        ->update(['estado' => $request->status]);
+        ->update(['estado' => $request->status, 'updated_at' => $datetimeNow]);
     }
 
     return response()->json(array('msg' => $statusQuantity), 200);

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Encuesta_tutor;
+use App\Models\Encuesta_tutor_pregunta;
 use App\Models\Sede_director;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -108,6 +109,7 @@ class DirectorController extends Controller {
         }
       }
     }
+
     return view('director.list', compact('cycles', 'status'));
   }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Administrador;
 use App\Models\Encuesta_docente;
 use App\Models\Encuesta_docente_pregunta;
+use App\Models\Encuesta_pregunta_opcion;
 use App\Models\Encuesta_tutor_pregunta;
 use App\Models\Horario_docente;
 use App\Models\Sede_director;
@@ -24,25 +25,33 @@ class WelcomeController extends Controller {
     $dateNow = $datetimeNow->toDateString();
     $timeNow = $datetimeNow->toTimeString();
     $todayDayFormat = Carbon::today()->format('l');
-    // $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
-    $todayDay = "Lunes";
-    $admins = ["jcuadros@vonex.edu.pe"];
+    $todayDay = ucfirst(Carbon::parse($todayDayFormat)->locale('es')->dayName);
+    // $todayDay = "Lunes";
+    $superAdmins = Administrador::SUPERADMINS;
+    $admins = Administrador::orderBy('id')->get();
     $sedes = Sede_director::orderBy('id', 'asc')->get();
     $todayHour = date('H:i:s');
     // $surveyTime = Administrador::TIMESURVEY * 60;
     $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $config = false;
+    $configFull = false;
     $horariesStatus = [];
     $cyclesMerge = [];
     $horaryTimes = [];
     $horaryIdsMerge = [];
     $sedeMerge = [];
     $listDirectors = [];
+    $lisTAdmins = [];
 
     // Get list of directors
     foreach ($sedes as $sede) {
       array_push($listDirectors, $sede->email_director);
+    }
+
+    // Get list of admins
+    foreach ($admins as $admin) {
+      array_push($lisTAdmins, $admin->email);
     }
 
     // Get Role
@@ -54,6 +63,15 @@ class WelcomeController extends Controller {
       WHERE tuse.id = '" . Auth::user()->id . "'  
     ");
     $role = strtolower($perfil[0]->rol);
+
+    // Validate Access Admin
+    if (in_array($email, $lisTAdmins)) {
+      $config = true;
+    }
+    // Validate Access Admin Full
+    if (in_array($email, $superAdmins)) {
+      $configFull = true;
+    }
 
     // Validate Director
     // if (in_array($email, $listDirectors)) {
@@ -93,11 +111,6 @@ class WelcomeController extends Controller {
         ORDER BY apellido_tutor
       ");
 
-      // Validate Access Admin
-      if (in_array($email, $admins)) {
-        $config = true;
-      }
-
       // Get Status by Tutor
       $tutorStatus =  DB::connection('pgsql2')->table('estado_encuesta_tutores')
         ->where('email_coordinador', Auth::user()->email)
@@ -114,7 +127,11 @@ class WelcomeController extends Controller {
         }
       }
 
-      return view('director.index', compact('role', 'cycles', 'config'));
+      // Get Questions Tutor
+      $questions = Encuesta_tutor_pregunta::orderBy('numero_pregunta')->get();
+      $options = Encuesta_pregunta_opcion::where('tipo', 'tutor')->orderBy('indice')->get();
+
+      return view('director.index', compact('role', 'cycles', 'config', 'questions', 'options', 'configFull'));
     } else if ($role == 'tutor') {
       // Get Tutor Info
       $cycles = DB::select("SELECT DISTINCT
@@ -174,7 +191,11 @@ class WelcomeController extends Controller {
       }
       $horaryIds = "'" . implode("','", $horaryIdsMerge) . "'";
 
-      return view('tutor.index', compact('role', 'horaries', 'horaryTimes'));
+      // Get Questions Tutor
+      $questions = Encuesta_docente_pregunta::orderBy('numero_pregunta')->get();
+      $options = Encuesta_pregunta_opcion::where('tipo', 'docente')->orderBy('indice')->get();
+
+      return view('tutor.index', compact('role', 'horaries', 'horaryTimes', 'questions', 'options', 'config', 'configFull'));
     } else if ($role == "alumno" && is_numeric($name)) {
       // Data
       $cycleActive = [];
@@ -297,7 +318,7 @@ class WelcomeController extends Controller {
       // return view('welcome2', compact('role', 'dni', 'cycleActive', 'courseSurveySent', 'horaryTimes', 'type', 'questions'));
       return view('alumn.index', compact('role', 'dni', 'cycleActive', 'courseSurveySent', 'horaryTimes', 'type', 'questions'));
     } else {
-      if (in_array($email, $admins)) {
+      if (in_array($email, $superAdmins) || in_array($email, $admins)) {
         return redirect()->route('dashboard');
       }
       Auth::logout();

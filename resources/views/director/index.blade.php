@@ -1,5 +1,15 @@
 @extends('welcome')
 
+@section('menu')
+  @if (isset($config))
+    @if ($config)
+      <a href="{{ route('dashboard') }}">
+        <i class="text-white fa-solid fa-gear" style="font-size: 2rem; cursor:pointer;" id="btn-config"></i>
+      </a>
+    @endif
+  @endif
+@endsection
+
 @section('content')
   <div class="container mt-3">
     {{-- Top Block --}}
@@ -12,7 +22,10 @@
           <div><b>EMAIL: </b>{{ Auth::user()->email }}</div>
         </div>
       @endauth
-      <div></div>
+      <div>
+        <i class="fa-solid fa-clipboard-question text-primary" id="questions" style="font-size: 2rem;cursor: pointer;"
+          data-bs-toggle="modal" data-bs-target="#modal-questions"></i>
+      </div>
     </div>
 
     {{-- Table --}}
@@ -37,6 +50,44 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal Questions -->
+  <div class="modal fade" id="modal-questions" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-4 text-primary fw-bold">
+            ENCUESTA A TUTORES
+            <small id="title-questions"></small>
+          </h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div id="questions-list">
+            <ul class="list-options-questions text-primary m-auto mb-4">
+              <li><span class="text-secondary">1 = </span>Nunca</li>
+              <li><span class="text-secondary">2 = </span>Pocas veces</li>
+              <li><span class="text-secondary">3 = </span>Regularmente</li>
+              <li><span class="text-secondary">4 = </span>Casi siempre</li>
+              <li><span class="text-secondary">5 = </span>Siempre</li>
+            </ul>
+            @foreach ($questions as $question)
+              <div class="d-flex gap-1 mb-1">
+                <b class="text-secondary">{{ $question->numero_pregunta }}. </b>
+                <span class="text-secondary">{{ $question->pregunta }}</span>
+              </div>
+              <div class="d-flex gap-4 justify-content-start mb-4">
+                <span class="text-secondary"></span>
+                @foreach ($options as $option)
+                  <span class="text-secondary">{{ $option->opcion }}</span>
+                @endforeach
+              </div>
+            @endforeach
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 @endsection
 
 
@@ -47,6 +98,7 @@
 
     // Div
     let reloadTable = document.querySelector('#reload-table');
+    let questions = document.querySelector('#questions');
 
     // Field
     let horaryChecks = document.querySelectorAll(".horaryActive");
