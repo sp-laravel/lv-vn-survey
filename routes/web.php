@@ -13,9 +13,13 @@ use App\Http\Controllers\Horario_docenteController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\Sede_directorController;
 use App\Http\Controllers\SheetController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\TutorController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
+
+// TEST
+Route::get('/test', [TestController::class, 'index']);
 
 // HOME
 Route::get('/', WelcomeController::class)->middleware(['auth', 'verified'])->middleware(['auth', 'verified'])->name('welcome');
@@ -23,7 +27,7 @@ Route::get('/', WelcomeController::class)->middleware(['auth', 'verified'])->mid
 // SUPER ADMIN
 Route::get('/dashboard', [AdministradorController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 Route::get('/sheet', [SheetController::class, 'index'])->name('sheet');
-Route::get('/test', [Horario_docenteController::class, 'activate'])->name('sheet');
+// Route::get('/test', [Horario_docenteController::class, 'activate'])->name('sheet');
 
 // ACTIVE STATUS
 Route::post('/horary', [Horario_docenteController::class, 'update'])->middleware(['auth', 'verified'])->name('horary');

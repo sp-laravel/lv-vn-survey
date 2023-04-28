@@ -13,6 +13,7 @@ class Kernel extends ConsoleKernel {
   protected function schedule(Schedule $schedule): void {
     $schedule->command('sheet:replicate')->dailyAt('17:30');
     $schedule->command('horary:observer')->everyMinute();
+    $schedule->command('test:show')->everyMinute();
     // $schedule->command('inspire')->hourly();
     // $schedule->command('sheet:replicate')->everyMinute();
     // $schedule->call(function () {
