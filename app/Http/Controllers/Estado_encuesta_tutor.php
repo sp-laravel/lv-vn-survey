@@ -37,11 +37,11 @@ class Estado_encuesta_tutor extends Controller {
       DB::connection('pgsql2')->table('estado_encuesta_tutores')->insert($dataAll);
     } else {
       DB::connection('pgsql2')->table('estado_encuesta_tutores')
-        ->where('email_coordinador', Auth::user()->email)
+        // ->where('email_coordinador', Auth::user()->email)
         ->where('dni_tutor', $request->id)
         ->where('aula', $request->aula)
         ->where('fecha', $dateNow)
-        ->update(['estado' => $request->status, 'updated_at' => $datetimeNow]);
+        ->update(['estado' => $request->status, 'updated_at' => $datetimeNow, 'email_coordinador' => Auth::user()->email]);
     }
 
     return response()->json(array('msg' => $statusQuantity), 200);

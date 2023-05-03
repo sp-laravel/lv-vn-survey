@@ -1,6 +1,9 @@
 body{
   position: relative;
 }
+table{
+  font-size: 14px;
+}
 
 .loading {
   display: none;

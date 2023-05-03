@@ -3,6 +3,7 @@
     <td class="text-secondary">{{ $horary->h_fin }}</td>
     <td class="text-secondary">{{ $horary->h_inicio }}</td>
     <td class="text-secondary">{{ $horary->docente }}</td>
+    <td class="text-secondary">{{ $horary->horario }}</td>
     <td class="text-secondary">{{ $horary->asignatura }}</td>
     <td class="text-secondary">{{ $horary->aula }}</td>
     <td style="width: 110px;">
@@ -26,10 +27,11 @@
       </div>
     </td>
     <td class="text-secondary">
-      <a data-bs-toggle="modal" data-bs-target="#modal-survey" data-aula="{{ $horary->aula }}"
+      {{-- <a data-bs-toggle="modal" data-bs-target="#modal-survey" data-aula="{{ $horary->aula }}"
         data-curso="{{ $horary->asignatura }}" data-docente="{{ $horary->docente }}" class="text-primary loadSurveyed"
         style="cursor: pointer;text-decoration: none;"><small>{{ $horary->quantity }}</small>
-      </a>
+      </a> --}}
+      <small>{{ $horary->quantity }}</small>
     </td>
   </tr>
 @endforeach

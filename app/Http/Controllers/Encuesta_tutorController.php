@@ -16,7 +16,8 @@ class Encuesta_tutorController extends Controller {
 
       // Data
       $datetimeNow = Carbon::now();
-      $today = $datetimeNow->toDateString();
+      // $today = $datetimeNow->toDateString();
+      $today = '2023-05-02';
       $timeNow = $datetimeNow->toTimeString();
 
       $surveys = Encuesta_tutor::where('fecha', $today)->get();
@@ -25,16 +26,18 @@ class Encuesta_tutorController extends Controller {
 
       foreach ($surveys as $survey) {
         $surveysTemp = [
-          'id' => $survey->id,
-          'id_alumn' => $survey->dni,
-          'tutor_email' => $survey->email,
-          'week' => "",
-          'day' => "",
-          'state' => $survey->estado,
-          'date' => $survey->fecha,
-          'time' => $survey->hora,
-          'cycle' => "",
-          'turno' => $survey->turno
+          'tutor' => $survey->tutor,
+          'aula' => $survey->aula,
+          'fecha' => $survey->fecha,
+          'hora' => $survey->hora,
+          'n1' => $survey->n1,
+          'n2' => $survey->n2,
+          'n3' => $survey->n3,
+          'n4' => $survey->n4,
+          'n5' => $survey->n5,
+          'n6' => $survey->n6,
+          'n7' => $survey->n7,
+          'n8' => $survey->n8
         ];
         array_push($surveysApi, $surveysTemp);
       }

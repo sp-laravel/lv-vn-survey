@@ -73,6 +73,10 @@ Route::post('/option_delete', [Encuesta_pregunta_opcionController::class, 'destr
 Route::post('encuesta_docente', [Encuesta_docenteController::class, 'store'])->middleware(['auth', 'verified'])->name('encuesta_docente.store');
 Route::post('encuesta_tutor', [Encuesta_tutorController::class, 'store'])->middleware(['auth', 'verified'])->name('encuesta_tutor.store');
 
+// API
+Route::get('/survey_tutor/v1', [Encuesta_tutorController::class, 'index']);
+Route::get('/survey_docente/v1', [Encuesta_docenteController::class, 'index']);
+
 // Route::middleware('auth')->group(function () {
 //   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 //   Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

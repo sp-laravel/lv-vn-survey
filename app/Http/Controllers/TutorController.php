@@ -61,7 +61,8 @@ class TutorController extends Controller {
           ELSE 'No encuestado'
         END AS proceso,
         estado,
-        CONCAT('', ' ') as quantity
+        CONCAT('', ' ') as quantity,
+        CONCAT(to_char(h_inicio,'HH24:MI'), ' - ', to_char(h_fin,'HH24:MI')) as horario
       FROM 
         horario_docentes
       WHERE 
@@ -180,7 +181,7 @@ class TutorController extends Controller {
     foreach ($alumns as $alumn) {
       $status  = "";
       if (in_array($alumn->dni_alumno, $surveyedsOk)) {
-        $status = "Si";
+        $status = "si";
       } else {
         $status = "-";
       }

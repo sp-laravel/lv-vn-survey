@@ -74,7 +74,6 @@ class WelcomeController extends Controller {
     }
 
     // Validate Director
-    // if (in_array($email, $listDirectors)) {
     if ($role == 'coordinador') {
       // Data
       $query = "";

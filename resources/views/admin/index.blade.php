@@ -31,6 +31,45 @@
     {{-- Bottom Block --}}
     <div class="tables-group">
 
+      {{-- ONLINE --}}
+      <div class="">
+        <h4 class="mt-4 text-secondary">ENCUESTAS ACTIVAS</h4>
+      </div>
+      <div class="mt-3 mb-5 d-flex justify-content-start gap-3">
+        {{-- TUTOR --}}
+        <div class="table-responsive">
+          <table class="table border rounded table-striped table-hover">
+            <thead>
+              <th colspan="2" class="text-primary">TUTORES</th>
+            </thead>
+            <tbody>
+              @foreach ($tutors as $tutor)
+                <tr>
+                  <td class="text-secondary">{{ $tutor['email_tutor'] }} :</td>
+                  <td class="text-secondary">{{ $tutor['aula'] }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+        {{-- DIRECTOR --}}
+        <div class="table-responsive">
+          <table class="table border rounded table-striped table-hover">
+            <thead>
+              <th colspan="2" class="text-primary">DIRECTOR</th>
+            </thead>
+            <tbody>
+              @foreach ($directors as $director)
+                <tr>
+                  <td class="text-secondary">{{ $director->email_coordinador }}</td>
+                  <td class="text-secondary">{{ $director->aula }}</td>
+                </tr>
+              @endforeach
+            </tbody>
+          </table>
+        </div>
+      </div>
+
       @if (isset($configFull))
         @if ($configFull)
           {{-- Table Amin --}}
@@ -596,7 +635,6 @@
     </div>
   </div>
 @endsection
-
 
 @section('script')
   <script>

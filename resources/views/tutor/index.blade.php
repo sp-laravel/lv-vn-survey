@@ -31,12 +31,13 @@
     {{-- Table --}}
     <div class="mt-3">
       <div class="table-responsive">
-        <table class="table table-striped table-hover">
+        <table class="table table-striped table-sm table-hover">
           <thead>
             <tr class="bg-primary">
               <th class="text-white">INICIO</th>
               <th class="text-white">FIN</th>
               <th class="text-white">DOCENTE</th>
+              <th class="text-white">HORARIO</th>
               <th class="text-white">CURSO</th>
               <th class="text-white">AULA</th>
               <th class="text-white">ESTADO</th>

@@ -11,6 +11,39 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class Encuesta_docenteController extends Controller {
+  public function index(Request $request) {
+    $token = config('services.api.survey-token');
+    if ($request->token == $token) {
+
+      // Data
+      $datetimeNow = Carbon::now();
+      $today = $datetimeNow->toDateString();
+      // $today = '2023-05-02';
+      $timeNow = $datetimeNow->toTimeString();
+
+      $surveys = Encuesta_docente::where('fecha', $today)->get();
+      $surveysApi = [];
+      $surveysList = [];
+
+      foreach ($surveys as $survey) {
+        $surveysTemp = [
+          'docente' => $survey->docente,
+          'curso' => $survey->curso,
+          'aula' => $survey->aula,
+          'fecha' => $survey->fecha,
+          'hora' => $survey->hora,
+          'n1' => $survey->n1,
+          'n2' => $survey->n2,
+          'n3' => $survey->n3,
+          'n4' => $survey->n4
+        ];
+        array_push($surveysApi, $surveysTemp);
+      }
+      return $surveysApi;
+    } else {
+      return redirect('/');
+    }
+  }
   public function store(Request $request) {
     // return $request->all();
 
