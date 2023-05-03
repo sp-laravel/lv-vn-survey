@@ -20,9 +20,6 @@ use Illuminate\Support\Facades\Route;
 
 // TEST
 Route::get('/test', [TestController::class, 'index']);
-Route::get('/error', function () {
-  return view('errors.419');
-});
 
 // HOME
 Route::get('/', WelcomeController::class)->middleware(['auth', 'verified'])->middleware(['auth', 'verified'])->name('welcome');
@@ -39,6 +36,7 @@ Route::post('/survey', [Estado_encuesta_tutor::class, 'update'])->middleware(['a
 // LIST TABLES
 Route::get('/director_list', [DirectorController::class, 'show'])->middleware(['auth', 'verified']);
 Route::get('/tutor_list', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
+Route::get('/tutor_list/{email}/{dashboard}', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
 Route::get('/tutor_surveyed/{aula}/{curso}/{docente}', [TutorController::class, 'surveyed'])->middleware(['auth', 'verified']);
 Route::get('/alumn_form', [AlumnoController::class, 'show'])->middleware(['auth', 'verified']);
 

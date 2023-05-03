@@ -50,7 +50,7 @@
 
           <tbody id="tutorBody">
           </tbody>
-          <table>
+        </table>
       </div>
     </div>
   </div>

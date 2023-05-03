@@ -35,7 +35,7 @@
       <div class="">
         <h4 class="mt-4 text-secondary">ENCUESTAS ACTIVAS</h4>
       </div>
-      <div class="mt-3 mb-5 d-flex justify-content-start gap-3">
+      <div class="mt-3 mb-4 d-flex justify-content-start gap-3">
         {{-- TUTOR --}}
         <div class="table-responsive">
           <table class="table border rounded table-striped table-hover">
@@ -56,7 +56,7 @@
         <div class="table-responsive">
           <table class="table border rounded table-striped table-hover">
             <thead>
-              <th colspan="2" class="text-primary">DIRECTOR</th>
+              <th colspan="2" class="text-primary">DIRECTORES</th>
             </thead>
             <tbody>
               @foreach ($directors as $director)
@@ -70,6 +70,41 @@
         </div>
       </div>
 
+      {{-- <div class="">
+        <h4 class="mt-4 text-secondary">ENCUESTA TUTOR</h4>
+      </div>
+      <div class="">
+        <div class="my-3">
+          <select class="form-select" aria-label="Default select example" id="emailsTutor">
+            <option selected>Seleccionar tutor</option>
+            @foreach ($tutorUsers as $tutorUser)
+              <option value="{{ $tutorUser->persona_dni }}">{{ $tutorUser->email }}</option>
+            @endforeach
+          </select>
+        </div>
+        <div class="mt-3 table-responsive">
+          <table class="table border rounded table-striped table-hover">
+            <thead>
+              <tr class="bg-primary">
+                <th class="text-white">INICIO</th>
+                <th class="text-white">FIN</th>
+                <th class="text-white">DOCENTE</th>
+                <th class="text-white">HORARIO</th>
+                <th class="text-white">CURSO</th>
+                <th class="text-white">AULA</th>
+                <th class="text-white">ESTADO</th>
+                <th class="text-center text-white">ACTIVAR</th>
+                <th class="text-center text-white">
+                  <i id="reload-table" class="fa-solid fa-arrows-rotate" style="cursor: pointer;"></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="tutor-body"></tbody>
+          </table>
+        </div>
+      </div> --}}
+
+      {{-- CRUD ADMIN --}}
       @if (isset($configFull))
         @if ($configFull)
           {{-- Table Amin --}}
@@ -129,7 +164,7 @@
 
       {{-- Table Teacher --}}
       <div class="">
-        <h4 class="mt-4 text-secondary">ENCUESTAS DOCENTES</h4>
+        <h4 class="mt-4 text-secondary">ENCUESTA DOCENTE PREGUSTAS</h4>
       </div>
       <div class="mt-3 table-responsive">
         <table class="table border rounded table-striped table-hover">
@@ -177,7 +212,7 @@
 
       {{-- Table Tutor --}}
       <div class="">
-        <h4 class="mt-4 text-secondary">ENCUESTAS TUTORES</h4>
+        <h4 class="mt-4 text-secondary">ENCUESTA TUTOR PREGUNTAS</h4>
       </div>
       <div class="mt-3 table-responsive">
         <table class="table border rounded table-striped table-hover">
@@ -1024,6 +1059,23 @@
         $('#modal-option-delete').modal('hide');
         showOptions();
       })
+    });
+
+
+    // Show Tutor Survey
+    function showSurveyTutor(tutor, dashboard) {
+      let link = `tutor_list/${tutor}/${dashboard}`;
+      $.get(`{{ URL::to('${link}') }}`, function(data) {
+        $('#tutor-body').empty().html(data);
+        console.log(tutor)
+        console.log(dashboard)
+      })
+    }
+    // Get Tutor Survey
+    $(document).on('change', '#emailsTutor', function(event) {
+      let tutor = $("#emailsTutor option:selected").val();
+      let dashboard = 'admin';
+      showSurveyTutor(tutor, dashboard);
     });
   </script>
 @endsection

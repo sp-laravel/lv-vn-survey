@@ -23,7 +23,6 @@ class AdministradorController extends Controller {
     $role = 'admin';
     $lisTAdmins = [];
     $tutors = [];
-    $test = "hi";
 
     // Get list of admins
     foreach ($admins as $admin) {
@@ -63,16 +62,25 @@ class AdministradorController extends Controller {
             AND au.codigo_aula = '" . $tutor->aula . "'  
         ");
 
+        $emailTemp = $cycles[0]->email_tutor;
+
         $tutorsTemp = [
           'aula' => $tutor->aula,
-          'email_tutor' => $cycles[0]->email_tutor
+          'email_tutor' => $emailTemp
         ];
         array_push($tutors, $tutorsTemp);
       }
-
       // return $tutors;
 
-      return view('admin.index', compact('role', 'configFull', 'directors', 'tutors'));
+      // return $tutors;
+      $tutorUsers =  DB::select("SELECT email,persona_dni
+        FROM public.users tuse
+          INNER JOIN model_has_roles tmrol ON tmrol.model_id = tuse.id
+        WHERE tmrol.role_id = 11
+        ORDER BY email 
+      ");
+
+      return view('admin.index', compact('role', 'configFull', 'directors', 'tutors', 'tutorUsers'));
     } else {
       // return back()->with('message', ['No eres Admin']);
       return redirect()->route('welcome');

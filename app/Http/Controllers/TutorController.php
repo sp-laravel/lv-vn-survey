@@ -10,10 +10,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
 class TutorController extends Controller {
-  public function show() {
+  public function show(Request $request) {
     // Data
-    $name = Auth::user()->name;
-    $email = Auth::user()->email;
+    // $email = Auth::user()->email;
     $dni = Auth::user()->persona_dni;
     $datetimeNow = Carbon::now();
     $dateNow = $datetimeNow->toDateString();
@@ -25,6 +24,10 @@ class TutorController extends Controller {
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $cyclesMerge = [];
     $status = 0;
+
+    if ($request->dashboard == 'admin') {
+      $dni = $request->tutor;
+    }
 
     // Get Tutor Info
     $cycles = DB::select("SELECT DISTINCT
@@ -137,8 +140,7 @@ class TutorController extends Controller {
 
   public function surveyed(Request $request) {
     // Data
-    $name = Auth::user()->name;
-    $email = Auth::user()->email;
+    // $email = Auth::user()->email;
     $dni = Auth::user()->persona_dni;
     $datetimeNow = Carbon::now();
     $dateNow = $datetimeNow->toDateString();
