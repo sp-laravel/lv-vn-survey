@@ -20,6 +20,9 @@ use Illuminate\Support\Facades\Route;
 
 // TEST
 Route::get('/test', [TestController::class, 'index']);
+Route::get('/error', function () {
+  return view('errors.419');
+});
 
 // HOME
 Route::get('/', WelcomeController::class)->middleware(['auth', 'verified'])->middleware(['auth', 'verified'])->name('welcome');
