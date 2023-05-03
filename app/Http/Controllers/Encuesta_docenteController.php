@@ -17,7 +17,8 @@ class Encuesta_docenteController extends Controller {
 
       // Data
       $datetimeNow = Carbon::now();
-      $today = $datetimeNow->toDateString();
+      $today = $request->date;
+      // $today = $datetimeNow->toDateString();
       // $today = '2023-05-02';
       $timeNow = $datetimeNow->toTimeString();
 

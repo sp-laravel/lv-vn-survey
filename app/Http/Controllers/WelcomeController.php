@@ -31,7 +31,6 @@ class WelcomeController extends Controller {
     $admins = Administrador::orderBy('id')->get();
     $sedes = Sede_director::orderBy('id', 'asc')->get();
     $todayHour = date('H:i:s');
-    // $surveyTime = Administrador::TIMESURVEY * 60;
     $surveyTimeStart = Administrador::TIMESURVEYSTART * 60;
     $surveyTimeEnd = Administrador::TIMESURVEYEND * 60;
     $config = false;
@@ -73,7 +72,7 @@ class WelcomeController extends Controller {
       $configFull = true;
     }
 
-    // Validate Director
+    // Validate Director ********************************************************/
     if ($role == 'coordinador') {
       // Data
       $query = "";
@@ -112,7 +111,7 @@ class WelcomeController extends Controller {
 
       // Get Status by Tutor
       $tutorStatus =  DB::connection('pgsql2')->table('estado_encuesta_tutores')
-        ->where('email_coordinador', Auth::user()->email)
+        ->where('email_coordinador', $email)
         ->where('fecha', $dateNow)
         ->get();
 
