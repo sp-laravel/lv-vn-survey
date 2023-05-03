@@ -28,6 +28,7 @@ class Encuesta_docenteController extends Controller {
 
       foreach ($surveys as $survey) {
         $surveysTemp = [
+          'id' => $survey->id,
           'docente' => $survey->docente,
           'curso' => $survey->curso,
           'aula' => $survey->aula,
