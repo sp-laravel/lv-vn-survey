@@ -30,45 +30,55 @@
     {{-- Bottom Block --}}
     <div class="tables-group">
 
+
       {{-- ONLINE --}}
       <div class="">
-        <h4 class="mt-4 text-secondary">ENCUESTAS ACTIVAS</h4>
-      </div>
-      <div class="mt-3 mb-4 d-flex justify-content-start gap-3">
-        {{-- TUTOR --}}
-        <div class="table-responsive">
-          <table class="table border rounded table-striped table-hover">
-            <thead>
-              <th colspan="2" class="text-primary">TUTORES</th>
-            </thead>
-            <tbody>
-              @foreach ($tutors as $tutor)
-                <tr>
-                  <td class="text-secondary">{{ $tutor['email_tutor'] }} </td>
-                  <td class="text-secondary">{{ $tutor['aula'] }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+        <div class="">
+          <h4 class="mt-4 mb-3 text-secondary">ENCUESTAS ACTIVAS</h4>
         </div>
-        {{-- DIRECTOR --}}
-        <div class="table-responsive">
-          <table class="table border rounded table-striped table-hover">
-            <thead>
-              <th colspan="2" class="text-primary">DIRECTORES</th>
-            </thead>
-            <tbody>
-              @foreach ($directors as $director)
-                <tr>
-                  <td class="text-secondary">{{ $director->email_coordinador }}</td>
-                  <td class="text-secondary">{{ $director->aula }}</td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+        <div class="row row-cols-1 row-cols-md-2 gx-4">
+          {{-- TUTOR --}}
+          <div class="col">
+            <div class="table-responsive">
+              <table class="table border rounded table-striped table-hover">
+                <thead>
+                  <th colspan="3" class="text-primary">TUTORES</th>
+                </thead>
+                <tbody>
+                  @foreach ($tutors as $tutor)
+                    <tr>
+                      <td class="text-secondary">{{ $tutor['apellido_tutor'] }} {{ $tutor['nombre_tutor'] }} </td>
+                      <td class="text-secondary">{{ $tutor['email_tutor'] }} </td>
+                      <td class="text-secondary">{{ $tutor['aula'] }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {{-- DIRECTOR --}}
+          <div class="col">
+            <div class="table-responsive">
+              <table class="table border rounded table-striped table-hover">
+                <thead>
+                  <th colspan="3" class="text-primary">DIRECTORES</th>
+                </thead>
+                <tbody>
+                  @foreach ($directors as $director)
+                    <tr>
+                      <td class="text-secondary">{{ $director->email_coordinador }}</td>
+                      <td class="text-secondary">{{ $director->aula }}</td>
+                    </tr>
+                  @endforeach
+                </tbody>
+              </table>
+            </div>
+          </div>
         </div>
       </div>
 
+      {{-- ENCUESTA TUTOR --}}
       <div class="">
         <h4 class="mt-4 text-secondary">ENCUESTA TUTOR</h4>
       </div>

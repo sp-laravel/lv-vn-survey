@@ -24,6 +24,8 @@ class AdministradorController extends Controller {
     $lisTAdmins = [];
     $tutors = [];
     $emailTemp = "";
+    $apellidoTemp = "";
+    $nombreTemp = "";
 
     // Get list of admins
     foreach ($admins as $admin) {
@@ -50,6 +52,8 @@ class AdministradorController extends Controller {
       foreach ($getTutors as $tutor) {
         // Get Tutor Info
         $cycles = DB::select("SELECT DISTINCT
+            initcap(dus1.apellido_paterno||' '||dus1.apellido_materno)  as apellido_tutor,
+            initcap(dus1.nombres) as nombre_tutor,
             us1.email as email_tutor,
             au.codigo_aula as codigo_final
           FROM alumno_matricula am
@@ -66,13 +70,19 @@ class AdministradorController extends Controller {
 
         if (count($cycles) >= 1) {
           $emailTemp = $cycles[0]->email_tutor;
+          $apellidoTemp = $cycles[0]->apellido_tutor;
+          $nombreTemp = $cycles[0]->nombre_tutor;
         } else {
           $emailTemp = "";
+          $apellidoTemp = "";
+          $nombreTemp = "";
         }
 
         $tutorsTemp = [
           'aula' => $tutor->aula,
-          'email_tutor' => $emailTemp
+          'email_tutor' => $emailTemp,
+          'apellido_tutor' => $apellidoTemp,
+          'nombre_tutor' => $nombreTemp
         ];
         array_push($tutors, $tutorsTemp);
       }
