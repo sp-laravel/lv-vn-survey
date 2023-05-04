@@ -26,8 +26,10 @@ class TutorController extends Controller {
     $status = 0;
 
     if ($request->dashboard == 'admin') {
-      $dni = $request->tutor;
+      $dni = $request->dni;
     }
+
+    // $dni = '76209282';
 
     // Get Tutor Info
     $cycles = DB::select("SELECT DISTINCT

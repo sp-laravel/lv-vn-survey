@@ -108,21 +108,21 @@
 @endsection
 
 @section('script')
+  <script src="{{ url('/js/tutor_list.js') }}"></script>
   <script>
     // Data
     let horaryTimes = @json($horaryTimes);
     let timeRunning = new Date();
     let loadingRadios;
-
-    // Div
-    let reloadTable = document.querySelector('#reload-table');
+    let dni = @json(Auth::user()->persona_dni);
+    let dashboard = 'tutor';
 
     // Field
     let horaryChecks = document.querySelectorAll(".horaryActive");
 
     // Load
     $(document).ready(function() {
-      showTutorList();
+      showTutorList(dni, dashboard);
 
       // setTimeout(() => {
       //   // Div
@@ -140,10 +140,11 @@
     })
 
     // Show tutor List
-    function showTutorList() {
-      $.get("{{ URL::to('tutor_list') }}", function(data) {
+    function showTutorList(dni, dashboard) {
+      // $.get("{{ URL::to('tutor_list') }}", function(data) {
+      let link = `tutor_list/${dni}/${dashboard}`;
+      $.get(`{{ URL::to('${link}') }}`, function(data) {
         $('#tutorBody').empty().html(data);
-        // console.log("reload table")
       })
     }
 
@@ -198,8 +199,6 @@
       });
     }
 
-    setInterval(refreshWeb, 1000);
-
     // Radiobutton On/Off
     $("input:radio").on("click", function(e) {
       let inp = $(this);
@@ -212,67 +211,6 @@
       inp.addClass("theone");
     });
 
-    // Update Swich
-    function updateHoraryStatus(idHorary, status) {
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        },
-      });
-      $.ajax({
-        type: 'POST',
-        // url: '/horary',
-        url: url + '/horary',
-        data: {
-          id: idHorary,
-          status: status
-        },
-        success: function(data) {
-          // $("#data").html(data.msg);
-        },
-
-        error: function(msg) {
-          console.log(msg);
-          let errors = msg.responseJSON;
-        }
-      });
-    }
-
-    // Change switch
-    function activeStatus(element, id) {
-      // if ($(".horaryActive").is(":checked")) {
-      if ($('.horaryActive:checked').length > 1) {
-        element.checked = false;
-
-        Swal.fire({
-          icon: 'error',
-          title: `Solo una encuesta puede estar activa`,
-          showConfirmButton: false,
-          timer: 3000
-        })
-      } else {
-        // for (const loading of loadingRadios) {
-        //   loading.classList.add("radio__loading--active");
-        // }
-        let status = 0;
-        if (element.classList.contains('theone')) {
-          // if (element.checked) {
-          element.classList.remove("theone");
-          status = 0;
-        } else {
-          element.classList.add("theone");
-          status = 1;
-        }
-        updateHoraryStatus(id, status);
-        showTutorList();
-        // setTimeout(function() {
-        //   for (const loading of loadingRadios) {
-        //     loading.classList.remove("radio__loading--active");
-        //   }
-        // }, 2000);
-      }
-    }
-
     // Get List Surveyed
     $(document).on('click', '.loadSurveyed', function(event) {
       // $('#modal-survey').modal('show');
@@ -283,19 +221,15 @@
       showSurveyedList(aula, curso, docente);
     });
 
-    // Update Table
-    reloadTable.addEventListener('click', function() {
-      showTutorList();
-    })
-
-    // Verify Status
-    setInterval(validateStatus, 30000);
-
     // Validate Status
     function validateStatus() {
       if (status >= 1) {
         showTutorList()
       }
     }
+
+    // Verify Status
+    setInterval(validateStatus, 30000);
+    setInterval(refreshWeb, 1000);
   </script>
 @endsection

@@ -35,8 +35,8 @@ Route::post('/survey', [Estado_encuesta_tutor::class, 'update'])->middleware(['a
 
 // LIST TABLES
 Route::get('/director_list', [DirectorController::class, 'show'])->middleware(['auth', 'verified']);
-Route::get('/tutor_list', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
-Route::get('/tutor_list/{email}/{dashboard}', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
+// Route::get('/tutor_list', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
+Route::get('/tutor_list/{dni}/{dashboard}', [TutorController::class, 'show'])->middleware(['auth', 'verified']);
 Route::get('/tutor_surveyed/{aula}/{curso}/{docente}', [TutorController::class, 'surveyed'])->middleware(['auth', 'verified']);
 Route::get('/alumn_form', [AlumnoController::class, 'show'])->middleware(['auth', 'verified']);
 

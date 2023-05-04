@@ -27,7 +27,6 @@
       @endauth
       <div></div>
     </div>
-
     {{-- Bottom Block --}}
     <div class="tables-group">
 
@@ -45,7 +44,7 @@
             <tbody>
               @foreach ($tutors as $tutor)
                 <tr>
-                  <td class="text-secondary">{{ $tutor['email_tutor'] }} :</td>
+                  <td class="text-secondary">{{ $tutor['email_tutor'] }} </td>
                   <td class="text-secondary">{{ $tutor['aula'] }}</td>
                 </tr>
               @endforeach
@@ -70,7 +69,7 @@
         </div>
       </div>
 
-      {{-- <div class="">
+      <div class="">
         <h4 class="mt-4 text-secondary">ENCUESTA TUTOR</h4>
       </div>
       <div class="">
@@ -102,7 +101,7 @@
             <tbody id="tutor-body"></tbody>
           </table>
         </div>
-      </div> --}}
+      </div>
 
       {{-- CRUD ADMIN --}}
       @if (isset($configFull))
@@ -672,6 +671,7 @@
 @endsection
 
 @section('script')
+  <script src="{{ url('/js/tutor_list.js') }}"></script>
   <script>
     // Load
     $(document).ready(function() {
@@ -687,6 +687,9 @@
     // }
   </script>
   <script>
+    // Data
+    let dni = '';
+    let dashboard = '';
     // Load
     $(document).ready(function() {
       showAdmins();
@@ -1063,19 +1066,17 @@
 
 
     // Show Tutor Survey
-    function showSurveyTutor(tutor, dashboard) {
-      let link = `tutor_list/${tutor}/${dashboard}`;
+    function showTutorList(dni, dashboard) {
+      let link = `tutor_list/${dni}/${dashboard}`;
       $.get(`{{ URL::to('${link}') }}`, function(data) {
         $('#tutor-body').empty().html(data);
-        console.log(tutor)
-        console.log(dashboard)
       })
     }
     // Get Tutor Survey
     $(document).on('change', '#emailsTutor', function(event) {
-      let tutor = $("#emailsTutor option:selected").val();
-      let dashboard = 'admin';
-      showSurveyTutor(tutor, dashboard);
+      dni = $("#emailsTutor option:selected").val();
+      dashboard = 'admin';
+      showTutorList(dni, dashboard);
     });
   </script>
 @endsection

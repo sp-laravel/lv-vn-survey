@@ -23,6 +23,7 @@ class AdministradorController extends Controller {
     $role = 'admin';
     $lisTAdmins = [];
     $tutors = [];
+    $emailTemp = "";
 
     // Get list of admins
     foreach ($admins as $admin) {
@@ -44,6 +45,7 @@ class AdministradorController extends Controller {
 
       $directors = Estado_encuesta_tutor::where('estado', 1)->get();
       $getTutors = Horario_docente::where('estado', 1)->get();
+      // return $getTutors;
 
       foreach ($getTutors as $tutor) {
         // Get Tutor Info
@@ -62,7 +64,11 @@ class AdministradorController extends Controller {
             AND au.codigo_aula = '" . $tutor->aula . "'  
         ");
 
-        $emailTemp = $cycles[0]->email_tutor;
+        if (count($cycles) >= 1) {
+          $emailTemp = $cycles[0]->email_tutor;
+        } else {
+          $emailTemp = "";
+        }
 
         $tutorsTemp = [
           'aula' => $tutor->aula,
@@ -70,9 +76,7 @@ class AdministradorController extends Controller {
         ];
         array_push($tutors, $tutorsTemp);
       }
-      // return $tutors;
 
-      // return $tutors;
       $tutorUsers =  DB::select("SELECT email,persona_dni
         FROM public.users tuse
           INNER JOIN model_has_roles tmrol ON tmrol.model_id = tuse.id
