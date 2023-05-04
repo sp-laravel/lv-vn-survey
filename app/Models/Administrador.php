@@ -13,5 +13,5 @@ class Administrador extends Model {
 
   public const TIMESURVEYSTART = 10;
   public const TIMESURVEYEND = 20;
-  public const SUPERADMINS = ["jcuadros@vonex.edu.pe", "soporte@vonex.edu.pe"];
+  public const SUPERADMINS = ["jcuadros@vonex.edu.pe", "soporte@vonex.edu.pe", "soporte@vonneumann.pe"];
 }
