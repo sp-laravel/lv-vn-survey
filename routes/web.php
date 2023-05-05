@@ -6,6 +6,7 @@ use App\Http\Controllers\DirectorController;
 use App\Http\Controllers\Encuesta_docenteController;
 use App\Http\Controllers\Encuesta_pregunta_opcionController;
 use App\Http\Controllers\Encuesta_tutorController;
+use App\Http\Controllers\EncuestaDocenteControlController;
 use App\Http\Controllers\EncuestaDocentePreguntaController;
 use App\Http\Controllers\EncuestaTutorPreguntaController;
 use App\Http\Controllers\Estado_encuesta_tutor;
@@ -77,7 +78,7 @@ Route::post('encuesta_tutor', [Encuesta_tutorController::class, 'store'])->middl
 // API
 Route::get('/survey_tutor/v1', [Encuesta_tutorController::class, 'index']);
 Route::get('/survey_docente/v1', [Encuesta_docenteController::class, 'index']);
-Route::get('/survey_docente_control/v1', [Encuesta_docenteController::class, 'control']);
+Route::get('/survey_docente_control/v1', [EncuestaDocenteControlController::class, 'index']);
 
 // Route::middleware('auth')->group(function () {
 //   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
