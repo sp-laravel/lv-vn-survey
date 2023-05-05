@@ -101,7 +101,14 @@ class Encuesta_docenteController extends Controller {
       $encuesta_docente->dni_alumno = Auth::user()->name;
       $encuesta_docente->save();
 
-      return redirect('/')->with('success', 'Encuesta enviada');
+      $data = [
+        'msg' => "Encuesta enviada",
+        'date' => $dateNow,
+        'time' => $timeNow,
+      ];
+
+      // return redirect('/')->with('success', 'Encuesta enviada');
+      return redirect('/')->with('success', $data);
     } else {
       return redirect('/')->with('error', 'La encuesta ha finalizado');
     }

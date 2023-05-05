@@ -7,9 +7,10 @@
       let msgBack = @json(session('success'));
       Swal.fire({
         icon: 'success',
-        title: `${msgBack}`,
-        showConfirmButton: false,
-        timer: 3000
+        title: `${msgBack['date']} / ${msgBack['time']}`,
+        // text: `${msgBack['msg']}`,
+        // showConfirmButton: false,
+        // timer: 3000
       })
     </script>
   @endif
