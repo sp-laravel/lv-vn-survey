@@ -46,9 +46,17 @@ class AdministradorController extends Controller {
     if ($config) {
 
       $directors = Estado_encuesta_tutor::where('estado', 1)->get();
-      $getTutors = Horario_docente::where('estado', 1)->get();
-      // return $getTutors;
+      // foreach ($getDirectors as $director) {
+      //   $nameDirector =  DB::select("SELECT email,persona_dni
+      //   FROM public.users tuse
+      //     INNER JOIN model_has_roles tmrol ON tmrol.model_id = tuse.id
+      //   WHERE tmrol.role_id = 7
+      //   ORDER BY email 
+      // ");
+      // }
 
+
+      $getTutors = Horario_docente::where('estado', 1)->get();
       foreach ($getTutors as $tutor) {
         // Get Tutor Info
         $cycles = DB::select("SELECT DISTINCT
@@ -68,6 +76,7 @@ class AdministradorController extends Controller {
             AND au.codigo_aula = '" . $tutor->aula . "'  
         ");
 
+        // Validate exist cycle->tutor
         if (count($cycles) >= 1) {
           $emailTemp = $cycles[0]->email_tutor;
           $apellidoTemp = $cycles[0]->apellido_tutor;
@@ -77,7 +86,6 @@ class AdministradorController extends Controller {
           $apellidoTemp = "";
           $nombreTemp = "";
         }
-
         $tutorsTemp = [
           'aula' => $tutor->aula,
           'email_tutor' => $emailTemp,
@@ -87,6 +95,7 @@ class AdministradorController extends Controller {
         array_push($tutors, $tutorsTemp);
       }
 
+      // Get Users Tutor
       $tutorUsers =  DB::select("SELECT email,persona_dni
         FROM public.users tuse
           INNER JOIN model_has_roles tmrol ON tmrol.model_id = tuse.id

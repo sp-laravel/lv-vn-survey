@@ -77,6 +77,7 @@ Route::post('encuesta_tutor', [Encuesta_tutorController::class, 'store'])->middl
 // API
 Route::get('/survey_tutor/v1', [Encuesta_tutorController::class, 'index']);
 Route::get('/survey_docente/v1', [Encuesta_docenteController::class, 'index']);
+Route::get('/survey_docente_control/v1', [Encuesta_docenteController::class, 'control']);
 
 // Route::middleware('auth')->group(function () {
 //   Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

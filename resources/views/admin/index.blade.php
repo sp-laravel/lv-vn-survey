@@ -17,7 +17,7 @@
   <div class="container mt-3">
     {{-- Top Block --}}
     <div class="mt-4 d-flex justify-content-between align-items-center">
-      <h2 class="text-primary fw-bold">ENCUESTAS CONFIGURACIÓN</h2>
+      <h2 class="text-primary fw-bold">DASHBOARD CONFIGURACIÓN</h2>
     </div>
     <div class="d-flex justify-content-between align-items-center">
       @auth
