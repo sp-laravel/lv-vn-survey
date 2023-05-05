@@ -15,6 +15,7 @@ class EncuestaDocenteControlController extends Controller {
       $today = $request->date;
       $today = str_replace('"', '', $today);
       $data = Encuesta_docente_control::where('fecha', $today)->get();
+      $data->makeHidden(['created_at', 'updated_at']);
 
       return $data;
     } else {
@@ -87,9 +88,9 @@ class EncuestaDocenteControlController extends Controller {
       if ($countCycle < 3) {
         $status = 0;
       } elseif ($countCycle >= 3 && $countCycle <= 9) {
-        $status = 3;
-      } elseif ($countCycle >= 10) {
         $status = 2;
+      } elseif ($countCycle >= 10) {
+        $status = 1;
       }
 
       // array_push($cantCyclesRow, $countCycle);
@@ -192,9 +193,9 @@ class EncuestaDocenteControlController extends Controller {
         if ($countCycle == 0) {
           $status = 0;
         } elseif ($countCycle >= 3 && $countCycle <= 9) {
-          $status = 3;
-        } elseif ($countCycle >= 10) {
           $status = 2;
+        } elseif ($countCycle >= 10) {
+          $status = 1;
         }
 
         // array_push($cantCyclesRow, $countCycle);
